@@ -109,7 +109,10 @@ The automated test result, controller observation, and VPCS connectivity check a
 - Add optional natural-language intent interpretation with secure API-key handling, schema validation, and evaluation tests.
 - Expand supported device platforms and route formats through independently tested adapters.
 - Strengthen operation evidence with durable, tamper-evident audit storage and broader operational testing.
-- Add the team’s YouTube demonstration link and presentation PDF when those materials are provided.
+
+## Team Demonstration Video
+
+[Watch the PS-008 project video on YouTube](https://youtu.be/tZcXjvHfEpg?si=Nb0RlGkdUhJWbuEH)
 
 ## Run and Test
 
