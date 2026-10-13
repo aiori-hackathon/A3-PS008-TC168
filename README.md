@@ -4,6 +4,9 @@
 
 An explainable, approval-gated assistant for planning and reviewing IPv4 static-route changes. Operators can inspect the predicted forwarding impact, review the exact proposed action, and retain control over approval. The project combines a deterministic three-router software twin with a GNS3/Cisco IOS adapter and a local dashboard.
 
+## Team Demonstration Video
+
+[Watch the PS-008 project video on YouTube](https://youtu.be/tZcXjvHfEpg?si=Nb0RlGkdUhJWbuEH)
 ## AIORI-3 Abstract
 
 ### Problem description
@@ -110,9 +113,6 @@ The automated test result, controller observation, and VPCS connectivity check a
 - Expand supported device platforms and route formats through independently tested adapters.
 - Strengthen operation evidence with durable, tamper-evident audit storage and broader operational testing.
 
-## Team Demonstration Video
-
-[Watch the PS-008 project video on YouTube](https://youtu.be/tZcXjvHfEpg?si=Nb0RlGkdUhJWbuEH)
 
 ## Run and Test
 
