@@ -1,0 +1,9 @@
+{
+  "intent_type": "add_static_route",
+  "source": "R1",
+  "destination": "10.30.0.0/24",
+  "next_hop": "192.168.1.1",
+  "protocol": "static",
+  "requested_change": "Demonstrate rejection of an external next hop",
+  "request_id": "example-invalid-001"
+}

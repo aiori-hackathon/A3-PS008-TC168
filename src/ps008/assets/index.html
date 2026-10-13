@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PS-008 | Network Control</title><link rel="icon" type="image/svg+xml" href="/static/favicon.svg"><link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#intent">Skip to intent form</a>
+<header class="topbar"><a href="/" class="brand"><span class="brand-icon">↗</span> NETWORK CONTROL <span class="tag">PS-008</span></a>
+  <div class="top-actions"><span class="local"><i></i> LOCAL SIMULATION</span><label class="sr-only" for="workspace">Workspace</label><select id="workspace"><option value="lab">Persistent lab</option><option value="demo">Judge demo</option></select></div>
+</header>
+<main>
+  <p><a href="/gns3">Open GNS3 evidence dashboard →</a></p>
+  <div class="page-heading"><div><p class="eyebrow">INTENT → EVIDENCE → APPROVAL</p><h1>A clearer view of every change.</h1><p class="subtitle">Plan a route. Inspect its impact. Stay in control.</p></div><div class="revision"><span>LAB REVISION</span><strong id="revision">—</strong></div></div>
+  <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+  <section id="demo-panel" class="demo-panel" hidden aria-label="Demonstration scenarios"><div><strong>Judge demo</strong><span>Each scenario resets only this session’s demo lab. Approve or reject the review yourself.</span></div><div class="scenario-buttons"><button data-scenario="success">Add route</button><button data-scenario="remove">Remove route</button><button data-scenario="rejected">Rejection</button><button data-scenario="conflict">Conflict</button><button data-scenario="loop">Loop</button><button data-scenario="rollback">Rollback</button><button data-scenario="verification">Verification failure</button></div></section>
+  <div class="dashboard-grid">
+    <div class="dashboard-column primary-column">
+    <section class="card topology-card"><div class="card-heading"><div><p class="eyebrow">01 / DIGITAL TWIN</p><h2>Your network, before the change.</h2></div><span class="pill">3 routers · IOS-style</span></div>
+      <svg id="topology" viewBox="0 0 700 180" role="img" aria-label="R1 connects to R2 on 10.0.1.0/24. R2 connects to R3 on 10.0.2.0/24.">
+        <path class="network-link" id="link-R1-R2" d="M145 72 H330"/><path class="network-link" id="link-R2-R3" d="M370 72 H555"/>
+        <text x="235" y="52" class="svg-label">10.0.1.0/24</text><text x="465" y="52" class="svg-label">10.0.2.0/24</text>
+        <g class="router-node" id="node-R1"><rect x="85" y="40" width="90" height="66" rx="15"/><text x="130" y="80">R1</text><text x="130" y="133" class="svg-label">10.10.0.0/24</text><text x="130" y="153" class="svg-small">OPERATIONS</text></g>
+        <g class="router-node" id="node-R2"><rect x="305" y="40" width="90" height="66" rx="15"/><text x="350" y="80">R2</text><text x="350" y="133" class="svg-label">10.30.0.0/24</text><text x="350" y="153" class="svg-small">CORE</text></g>
+        <g class="router-node" id="node-R3"><rect x="525" y="40" width="90" height="66" rx="15"/><text x="570" y="80">R3</text><text x="570" y="133" class="svg-label">10.20.0.0/24</text><text x="570" y="153" class="svg-small">ENGINEERING</text></g>
+      </svg>
+      <form id="trace-form" class="trace-form"><label for="trace-source">Trace from</label><select id="trace-source"><option>R1</option><option>R2</option><option>R3</option></select><label class="sr-only" for="trace-address">Destination IPv4 address</label><input id="trace-address" value="10.20.0.10" required placeholder="Destination IP"><button type="submit" class="secondary">Trace path ↗</button></form>
+      <div id="trace-result" class="trace-result" aria-live="polite">Trace an address to inspect each forwarding decision.</div>
+    </section>
+    <section class="card review-card"><div class="card-heading"><div><p class="eyebrow">03 / CHANGE REVIEW</p><h2>Evidence before execution.</h2></div><span id="review-status" class="pill">Awaiting intent</span></div>
+      <div id="review-empty" class="empty"><span class="empty-icon">⌁</span><h3>Start with an intent.</h3><p>Your exact command, validation evidence, and forwarding impact will appear here.</p></div>
+      <div id="review-content" hidden><p id="review-summary" class="review-summary"></p><p id="review-reason" class="field-hint"></p><div class="command-heading"><span>CANDIDATE CONFIGURATION</span><span id="review-meta"></span></div><pre id="commands"></pre>
+        <div id="validation"></div><div id="impact" class="impact"></div>
+        <details><summary>Inspect route table differences</summary><div id="route-diff"></div></details>
+        <div id="deployment-result" role="status" aria-live="polite"></div><div class="decision-buttons"><button id="reject" class="secondary">Reject change</button><button id="approve" class="primary">Approve & deploy →</button></div><p id="approval-hint" class="field-hint"></p>
+      </div>
+    </section>
+
+    <section class="card audit-card"><div class="card-heading"><div><p class="eyebrow">05 / AUDIT TRAIL</p><h2>Every decision has a record.</h2></div><button id="export-audit" class="text-button">Export JSON ↓</button></div><ol id="audit" class="audit-list"></ol></section>
+    </div>
+    <div class="dashboard-column secondary-column">
+    <section class="card intent-card" id="intent"><div class="card-heading"><div><p class="eyebrow">02 / OPERATOR INTENT</p><h2>What should change?</h2></div></div>
+      <form id="intent-form"><label for="intent-type">Action</label><select id="intent-type" name="intent_type"><option value="add_static_route">Add a static route</option><option value="remove_static_route">Remove a managed route</option></select>
+        <div class="form-row"><div><label for="source">Source router</label><select id="source" name="source"><option>R1</option><option>R2</option><option>R3</option></select></div><div><label for="destination">Destination network</label><input id="destination" name="destination" value="10.20.0.0/24" required></div></div>
+        <div id="hop-field"><label for="next-hop">Next hop</label><input id="next-hop" name="next_hop" value="10.0.1.2" required><p class="field-hint">Use the interface address of a directly connected neighbor.</p></div>
+        <label for="reason">Reason for change</label><textarea id="reason" name="requested_change" required rows="2">Connect operations to the engineering network</textarea>
+        <label for="request-id">Request ID</label><input id="request-id" name="request_id" required maxlength="120">
+        <button type="submit" class="primary full">Generate & validate <span>→</span></button><p class="field-hint">Creates a preview. The lab changes only after approval.</p>
+      </form>
+    </section>
+    <section class="card routes-card"><div class="card-heading"><div><p class="eyebrow">04 / CURRENT STATE</p><h2 id="routing-tables-heading">Routing tables.</h2></div><button id="refresh" class="text-button">Refresh ↻</button></div><p id="routes-scroll-hint" class="field-hint routes-scroll-hint">Scroll inside this panel to view all three routers. Keyboard: focus the panel and use the arrow or Page Down keys.</p><div id="route-tables" role="region" aria-labelledby="routing-tables-heading" aria-describedby="routes-scroll-hint" tabindex="0"></div></section>
+    </div>
+  </div>
+  <footer><span>PS-008 · Reviewed network configuration</span><span>Software twin · Deterministic planning · Provisional intent pair</span></footer>
+</main>
+</body></html>

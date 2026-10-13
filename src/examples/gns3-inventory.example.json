@@ -1,0 +1,20 @@
+{
+  "controller_url": "http://127.0.0.1:3080",
+  "api_version": "v2",
+  "project_id": "00000000-0000-0000-0000-000000000001",
+  "devices": [
+    {
+      "name": "R1",
+      "node_id": "00000000-0000-0000-0000-000000000002",
+      "management_ip": "192.0.2.10",
+      "username_env": "PS008_R1_USERNAME",
+      "password_env": "PS008_R1_PASSWORD"
+    }
+  ],
+  "probes": [
+    {
+      "source": "R1",
+      "destination": "10.20.0.10"
+    }
+  ]
+}

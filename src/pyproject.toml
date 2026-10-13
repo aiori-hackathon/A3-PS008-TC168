@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ps008-network-agent"
+version = "0.2.0"
+description = "Approval-gated IPv4 route changes for a simulator and isolated GNS3 lab"
+requires-python = ">=3.10"
+dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "jinja2>=3.1,<4"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "httpx>=0.27,<1", "playwright>=1.48,<2"]
+report = ["reportlab>=4.0"]
+gns3 = ["httpx>=0.27,<1", "netmiko>=4.4,<5"]
+
+[project.scripts]
+ps008 = "ps008.cli:main"
+
+[tool.setuptools.package-data]
+ps008 = ["assets/*.html", "assets/*.css", "assets/*.js", "assets/*.svg"]
+
+[tool.setuptools.packages.find]
+include = ["ps008"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
