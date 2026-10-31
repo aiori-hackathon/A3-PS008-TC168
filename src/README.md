@@ -1,5 +1,7 @@
 # PS-008 Network Management Agent
 
+[Project understanding and Proposed solution](https://youtu.be/tZcXjvHfEpg?si=Nb0RlGkdUhJWbuEH) · [Prototype demonstration link](https://drive.google.com/drive/folders/1gVgXb2LjOvwtVQpNY_jxOXl32ayPishS?usp=drive_link)
+
 A local dashboard and CLI for reviewed IPv4 static-route changes. The software-twin demo remains available, and `/gns3` provides a separate, approval-gated GNS3/IOS adapter with device read-back, endpoint probing, drift checks, an operation journal, and scoped recovery.
 
 ![Dashboard with a reviewed route](docs/images/dashboard.png)

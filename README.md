@@ -2,11 +2,13 @@
 
 **AIORI-3 hackathon project | Track: PS-008 | Submission repository: A3-PS008-TC168**
 
-An explainable, approval-gated assistant for planning and reviewing IPv4 static-route changes. Operators can inspect the predicted forwarding impact, review the exact proposed action, and retain control over approval. The project combines a deterministic three-router software twin with a GNS3/Cisco IOS adapter and a local dashboard.
+An explainable, approval-gated assistant for IPv4 static-route changes. Operators can inspect predicted forwarding paths, review the exact proposed command, and retain control of the deployment decision. The project combines a deterministic three-router software twin, a local dashboard, live GNS3/OpenWrt lab observation, and a Cisco IOS device adapter.
 
-## Team Demonstration Video
+## Project demonstrations
 
-[Watch the PS-008 project video on YouTube](https://youtu.be/tZcXjvHfEpg?si=Nb0RlGkdUhJWbuEH)
+- [Project understanding and Proposed solution](https://youtu.be/tZcXjvHfEpg?si=Nb0RlGkdUhJWbuEH) — team introduction, problem understanding, and proposed approach.
+- [Prototype demonstration link](https://drive.google.com/drive/folders/1gVgXb2LjOvwtVQpNY_jxOXl32ayPishS?usp=drive_link) — prototype recordings and supporting demonstration material.
+
 ## AIORI-3 Abstract
 
 ### Problem description
@@ -43,7 +45,8 @@ The project brings these concepts into an operator-centered workflow: structured
 The application provides two complementary ways to explore network changes:
 
 1. **Software twin:** a deterministic R1-R2-R3 model drives the dashboard demo. It checks route proposals against modeled forwarding and supports repeatable scenarios without router images.
-2. **GNS3/Cisco IOS adapter:** implements controller and device evidence capture, a restricted IOS route parser, modeled impact previews, approved static-route commands, state revalidation, route read-back, configured probes for additions, operation journaling, and scoped recovery outcomes.
+2. **Live OpenWrt evidence panel:** reads interfaces and IPv4 routes from the three-router GNS3 lab, runs a four-packet R1-to-R3 ping on request, and keeps timestamped captures for export.
+3. **Cisco IOS adapter:** implements controller and device evidence capture, a restricted IOS route parser, modeled impact previews, approved static-route commands, state revalidation, route read-back, configured probes for additions, operation journaling, and scoped recovery outcomes.
 
 The supported intents are `add_static_route` and `remove_static_route`. Route removal is limited to routes added and verified by the application. The adapter uses command allowlisting and verified SSH host keys. The dashboard presents modeled predictions separately from captured device evidence.
 
@@ -86,12 +89,12 @@ flowchart LR
 
 ## AIORI-3 Implemented Features and Evidence
 
-- **127 automated tests pass**, covering simulator behavior and mocked GNS3 controller/device workflows.
+- Automated tests cover the simulator, review lifecycle, and mocked GNS3 controller/device workflows; the commands below reproduce the current test result.
 - The local dashboard supports repeatable judge-demo scenarios, route preview, approval/rejection, audit review, and evidence export.
 - The software twin models a three-router topology and checks forwarding impact across relevant prefix ranges.
 - The GNS3 controller was discovered through the dashboard on the development laptop.
 - Two VPCS endpoints in an isolated GNS3 smoke lab exchanged ping replies across their virtual link.
-- A separate three-router OpenWrt GNS3 project is available for recording. Its dashboard panel reads live console interfaces and routes, sends an R1-to-R3 ping on request, and retains timestamped evidence. The latest observed ping returned 0/4 replies; this panel does not apply approved route changes to OpenWrt.
+- A three-router OpenWrt GNS3 project supports live console observation, on-demand ping tests, timestamped capture history, and JSON evidence export through the dashboard.
 - The IOS adapter implements a restricted, approval-gated IPv4 static-route workflow with state checks, read-back, configured probes, and conservative recovery states.
 
 The automated test result, controller observation, and VPCS connectivity check are distinct evidence types and are labeled accordingly in the project documentation.
@@ -104,6 +107,7 @@ The automated test result, controller observation, and VPCS connectivity check a
 | Review lifecycle, approval/rejection, audit, and simulator recovery | Implemented and tested |
 | GNS3 controller discovery | Observed locally through the dashboard |
 | GNS3 VPCS link connectivity | Demonstrated with live ping replies |
+| Three-router OpenWrt lab observation | Dashboard capture and evidence export implemented |
 | IOS-compatible route operations | Adapter workflow implemented; live-lab validation is a future milestone |
 
 ## Future Scope
