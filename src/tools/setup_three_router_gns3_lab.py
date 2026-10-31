@@ -1,9 +1,3 @@
-"""Create a real three-node OpenWrt topology in the local GNS3 application.
-
-This topology is for packet lab preparation. The IOS-only PS-008 device adapter
-must not be used to claim an OpenWrt deployment.
-"""
-
 from pathlib import Path
 
 from setup_gns3_smoke_lab import local_controller, request
