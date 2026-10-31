@@ -1,4 +1,5 @@
 """Local web dashboard. All configuration changes pass through ReviewService."""
+import json
 import secrets
 import time
 from pathlib import Path
@@ -15,6 +16,7 @@ from .reviews import ReviewConflict, ReviewNotFound, ReviewService
 from .state import StateStore, record_event
 from .lab_console import LabConsole
 from .backends import GNS3ReviewBackend, SimulatorReviewBackend
+from .openwrt_lab import capture as capture_openwrt_lab
 
 ASSETS = Path(__file__).parent / "assets"
 SCENARIOS = ("success", "remove", "rejected", "conflict", "loop", "rollback", "verification")
@@ -26,6 +28,7 @@ def create_app(state_file=".ps008/state.json", gns3_inventory=None, *, console=N
     app.mount("/static", StaticFiles(directory=ASSETS), name="static")
     templates = Jinja2Templates(directory=ASSETS)
     normal_store = StateStore(state_file)
+    openwrt_store = StateStore(normal_store.path.parent / "openwrt-lab-captures.json")
     console = console or LabConsole(gns3_inventory, normal_store.path.parent / "gns3-evidence.json")
     sessions = {}
 
@@ -99,6 +102,22 @@ def create_app(state_file=".ps008/state.json", gns3_inventory=None, *, console=N
     @app.get("/api/gns3/status")
     def gns3_status():
         return console.status()
+
+    @app.post("/api/gns3/openwrt-lab")
+    def gns3_openwrt_lab(data: dict):
+        if set(data) != {"ping"} or not isinstance(data["ping"], bool):
+            raise ValueError("Provide only a boolean ping option")
+        evidence = capture_openwrt_lab(data["ping"])
+        with openwrt_store.locked():
+            history = json.loads(openwrt_store.path.read_text(encoding="utf-8")) if openwrt_store.path.exists() else {"captures": []}
+            history["captures"] = (history["captures"] + [evidence])[-20:]
+            openwrt_store._write(openwrt_store.path, history)
+        return evidence
+
+    @app.get("/api/gns3/openwrt-lab")
+    def gns3_openwrt_history():
+        with openwrt_store.locked():
+            return json.loads(openwrt_store.path.read_text(encoding="utf-8")) if openwrt_store.path.exists() else {"captures": []}
 
     @app.post("/api/gns3/capture")
     def gns3_capture(data: dict):

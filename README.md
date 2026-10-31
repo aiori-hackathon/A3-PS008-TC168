@@ -91,6 +91,7 @@ flowchart LR
 - The software twin models a three-router topology and checks forwarding impact across relevant prefix ranges.
 - The GNS3 controller was discovered through the dashboard on the development laptop.
 - Two VPCS endpoints in an isolated GNS3 smoke lab exchanged ping replies across their virtual link.
+- A separate three-router OpenWrt GNS3 project is available for recording. Its dashboard panel reads live console interfaces and routes, sends an R1-to-R3 ping on request, and retains timestamped evidence. The latest observed ping returned 0/4 replies; this panel does not apply approved route changes to OpenWrt.
 - The IOS adapter implements a restricted, approval-gated IPv4 static-route workflow with state checks, read-back, configured probes, and conservative recovery states.
 
 The automated test result, controller observation, and VPCS connectivity check are distinct evidence types and are labeled accordingly in the project documentation.
