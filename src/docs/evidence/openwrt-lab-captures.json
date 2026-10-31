@@ -1,0 +1,285 @@
+{
+  "captures": [
+    {
+      "checked_at": "2026-10-31T17:06:27.212406+00:00",
+      "origin": "gns3-openwrt-console-observed",
+      "ping_requested": false,
+      "project": "AIORI-PS008-Three-Router-Lab",
+      "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+      "route_write_performed": false,
+      "routers": {
+        "R1": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R2": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R3": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        }
+      },
+      "sha256": "25ba39ab1a363b12645430c948308c58e81688673610a1b70bb6579130a926f9"
+    },
+    {
+      "checked_at": "2026-10-31T17:07:52.285141+00:00",
+      "origin": "gns3-openwrt-console-observed",
+      "ping_requested": false,
+      "project": "AIORI-PS008-Three-Router-Lab",
+      "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+      "route_write_performed": false,
+      "routers": {
+        "R1": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R2": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R3": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        }
+      },
+      "sha256": "8f2b9beb3d2cfa6a7292270076614984e78f4ee49c70d6c81fe8be9d9d66b9eb"
+    },
+    {
+      "checked_at": "2026-10-31T17:08:13.923370+00:00",
+      "origin": "gns3-openwrt-console-observed",
+      "ping_requested": false,
+      "project": "AIORI-PS008-Three-Router-Lab",
+      "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+      "route_write_performed": false,
+      "routers": {
+        "R1": {
+          "interfaces": "ip -4 address show\r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~# ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+          "routes": "ping -c 4 -W 2 10.0.2.2\r\nPING 10.0.2.2 (10.0.2.2): 56 data bytes",
+          "status": "started"
+        },
+        "R2": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~# \r\nroot@OpenWrt:~# ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R3": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~# \r\nroot@OpenWrt:~# ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "status": "started"
+        }
+      },
+      "sha256": "359e848207245f7875f05669f7eff84cc7edcabf3350e4635ea9bd43c9698459"
+    },
+    {
+      "checked_at": "2026-10-31T17:08:10.346621+00:00",
+      "origin": "gns3-openwrt-console-observed",
+      "ping_requested": true,
+      "project": "AIORI-PS008-Three-Router-Lab",
+      "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+      "route_write_performed": false,
+      "routers": {
+        "R1": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+          "ping": "ping -c 4 -W 2 10.0.2.2\r\nPING 10.0.2.2 (10.0.2.2): 56 data bytes\r\n\r\n--- 10.0.2.2 ping statistics ---\r\n4 packets transmitted, 0 packets received, 100% packet loss\r\nroot@OpenWrt:~# ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "ping_replies": {
+            "received": 0,
+            "sent": 4
+          },
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\nip -4 address show\r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~# ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R2": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R3": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        }
+      },
+      "sha256": "3472116cf92dfe3ec1a5593aafa7d7583c0c21ce6e710f7b9c8e13f8e5364b6c"
+    },
+    {
+      "checked_at": "2026-10-31T17:08:47.904301+00:00",
+      "origin": "gns3-openwrt-console-observed",
+      "ping_requested": true,
+      "project": "AIORI-PS008-Three-Router-Lab",
+      "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+      "route_write_performed": false,
+      "routers": {
+        "R1": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+          "ping": "ping -c 4 -W 2 10.0.2.2\r\nPING 10.0.2.2 (10.0.2.2): 56 data bytes\r\n\r\n--- 10.0.2.2 ping statistics ---\r\n4 packets transmitted, 0 packets received, 100% packet loss\r\nroot@OpenWrt:~#",
+          "ping_replies": {
+            "received": 0,
+            "sent": 4
+          },
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R2": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R3": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        }
+      },
+      "sha256": "1f7e72a134ceb2f3f263d9f678f6739d3b1aceb63270590d233fd8c0a368da0f"
+    },
+    {
+      "checked_at": "2026-10-31T17:47:16.727578+00:00",
+      "origin": "gns3-openwrt-console-observed",
+      "ping_requested": false,
+      "project": "AIORI-PS008-Three-Router-Lab",
+      "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+      "route_write_performed": false,
+      "routers": {
+        "R1": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R2": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R3": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        }
+      },
+      "sha256": "4adbf2583b3b94583049b21ab2cdc7214731843f051ce915185129f8aed3ceef"
+    },
+    {
+      "checked_at": "2026-10-31T17:48:09.265880+00:00",
+      "origin": "gns3-openwrt-console-observed",
+      "ping_requested": true,
+      "project": "AIORI-PS008-Three-Router-Lab",
+      "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+      "route_write_performed": false,
+      "routers": {
+        "R1": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+          "ping": "ping -c 4 -W 2 10.0.2.2\r\nPING 10.0.2.2 (10.0.2.2): 56 data bytes\r\n\r\n--- 10.0.2.2 ping statistics ---\r\n4 packets transmitted, 0 packets received, 100% packet loss\r\nroot@OpenWrt:~#",
+          "ping_replies": {
+            "received": 0,
+            "sent": 4
+          },
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R2": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R3": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        }
+      },
+      "sha256": "50c91d441f2abc0a47ba5caef146c2002a3046eccb3df64b23d145a5aac9e380"
+    },
+    {
+      "checked_at": "2026-10-31T18:13:16.406074+00:00",
+      "origin": "gns3-openwrt-console-observed",
+      "ping_requested": false,
+      "project": "AIORI-PS008-Three-Router-Lab",
+      "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+      "route_write_performed": false,
+      "routers": {
+        "R1": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R2": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R3": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        }
+      },
+      "sha256": "64120f9563d9164e16efc19c9be0ce0dfa4e55c55d4f004e667b618afb24ff45"
+    },
+    {
+      "checked_at": "2026-10-31T18:13:40.353769+00:00",
+      "origin": "gns3-openwrt-console-observed",
+      "ping_requested": true,
+      "project": "AIORI-PS008-Three-Router-Lab",
+      "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+      "route_write_performed": false,
+      "routers": {
+        "R1": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+          "ping": "ping -c 4 -W 2 10.0.2.2\r\nPING 10.0.2.2 (10.0.2.2): 56 data bytes\r\n\r\n--- 10.0.2.2 ping statistics ---\r\n4 packets transmitted, 0 packets received, 100% packet loss\r\nroot@OpenWrt:~#",
+          "ping_replies": {
+            "received": 0,
+            "sent": 4
+          },
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R2": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        },
+        "R3": {
+          "interfaces": "ip -4 address show\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\nroot@OpenWrt:~#",
+          "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+          "routes": "ip -4 route show\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\nroot@OpenWrt:~#",
+          "status": "started"
+        }
+      },
+      "sha256": "6def111256c27381c468b1b471c49bb72e4b954f4e9da2668b17571b50390d1c"
+    }
+  ]
+}

@@ -78,6 +78,16 @@ Interactive CLI deployment requires `yes` or `y`. Default state: `.ps008/state.j
 
 ## Verify and reproduce evidence
 
+### Evidence and reproducibility
+
+- **Automated tests:** [JUnit XML report](output/test-results.xml) from the latest local run: 127 passed, 0 failed (1 dependency deprecation warning). Rerun with the Pytest command below.
+- **Three-router topology:** [GNS3 screenshot](docs/evidence/gns3-three-router-topology.png) and the repeatable [lab setup helper](tools/setup_three_router_gns3_lab.py). The screenshot shows the started R1–R2–R3 OpenWrt nodes and links.
+- **Live router state:** [timestamped OpenWrt console captures](docs/evidence/openwrt-lab-captures.json) contain interface, route, and optional ping output for each capture. The dashboard labels these as console-observed evidence and can export the latest snapshot.
+- **Packet captures:** [R1–R2](docs/evidence/R1-R2.pcap) and [R2–R3](docs/evidence/R2-R3.pcap) can be opened in Wireshark. The recorded R1-to-R3 console ping received 0/4 replies; use the captures to investigate packet flow rather than infer success from green links. A separate [VPCS smoke-lab report](docs/evidence/gns3-smoke-evidence.json) records five replies across a direct GNS3 link.
+- **Review workflow:** [dashboard screenshot](docs/images/dashboard.png), [review screenshot](docs/images/review.png), and [judge walkthrough](docs/DEMO.md) show the software-twin proposal, modeled impact, approval/rejection, and result. The GNS3 IOS adapter is exercised by offline tests; a live IOS route deployment is a future validation step.
+
+The software-twin screenshots, mocked adapter tests, GNS3 controller observations, and OpenWrt packet captures represent distinct evidence sources. The linked files let reviewers inspect each result and reproduce the supported tests.
+
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q --junitxml=output/test-results.xml
 .\.venv\Scripts\python.exe -m playwright install chromium
