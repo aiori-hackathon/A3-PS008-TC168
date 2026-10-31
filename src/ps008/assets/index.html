@@ -14,7 +14,33 @@
   <p><a href="/gns3">Open GNS3 evidence dashboard →</a></p>
   <div class="page-heading"><div><p class="eyebrow">INTENT → EVIDENCE → APPROVAL</p><h1>A clearer view of every change.</h1><p class="subtitle">Plan a route. Inspect its impact. Stay in control.</p></div><div class="revision"><span>LAB REVISION</span><strong id="revision">—</strong></div></div>
   <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-  <section id="demo-panel" class="demo-panel" hidden aria-label="Demonstration scenarios"><div><strong>Judge demo</strong><span>Each scenario resets only this session’s demo lab. Approve or reject the review yourself.</span></div><div class="scenario-buttons"><button data-scenario="success">Add route</button><button data-scenario="remove">Remove route</button><button data-scenario="rejected">Rejection</button><button data-scenario="conflict">Conflict</button><button data-scenario="loop">Loop</button><button data-scenario="rollback">Rollback</button><button data-scenario="verification">Verification failure</button></div></section>
+  <section id="demo-panel" class="demo-panel" hidden aria-label="Demonstration scenarios"><div><strong>Judge demo</strong><span>Each scenario resets only this session’s demo lab. Approve or reject the review yourself.</span></div><div class="scenario-buttons"><button data-scenario="success">Add route</button><button data-scenario="remove">Remove route</button><button data-scenario="rejected">Rejection</button><button data-scenario="conflict">Conflict</button><button data-scenario="loop">Loop</button><button data-scenario="rollback">Rollback</button><button data-scenario="verification">Verification failure</button><button id="run-12-tests-btn" style="background:#087f71;color:#fff;font-weight:600;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;">⚡ Run 12 Mandatory Tests</button></div></section>
+  <section id="tests-modal" class="card" hidden style="margin-bottom:1.5rem;border:2px solid #087f71;border-radius:12px;background:#fff;">
+    <div class="card-heading">
+      <div>
+        <p class="eyebrow" style="color:#087f71;">AIORI-3 PS-008 VERIFICATION MATRIX</p>
+        <h2 id="tests-summary-title">12 Mandatory Operational Test Scenarios</h2>
+      </div>
+      <button id="close-tests-btn" class="text-button">Close ✕</button>
+    </div>
+    <div id="tests-table-container" style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:0.88rem;text-align:left;">
+        <thead>
+          <tr style="border-bottom:1px solid #e1e8e5;color:#62787e;">
+            <th style="padding:8px;">#</th>
+            <th style="padding:8px;">Status</th>
+            <th style="padding:8px;">Category</th>
+            <th style="padding:8px;">Requirement &amp; Scenario</th>
+            <th style="padding:8px;">Observed Evidence</th>
+            <th style="padding:8px;">Latency</th>
+          </tr>
+        </thead>
+        <tbody id="tests-table-body">
+          <tr><td colspan="6" style="padding:16px;text-align:center;color:#62787e;">Click &quot;Run 12 Mandatory Tests&quot; to execute...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
   <div class="dashboard-grid">
     <div class="dashboard-column primary-column">
     <section class="card topology-card"><div class="card-heading"><div><p class="eyebrow">01 / DIGITAL TWIN</p><h2>Your network, before the change.</h2></div><span class="pill">3 routers · IOS-style</span></div>

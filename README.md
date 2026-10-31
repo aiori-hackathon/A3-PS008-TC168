@@ -135,6 +135,20 @@ cd src
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
+Run the mandatory 12-scenario verification suite:
+
+```powershell
+.\.venv\Scripts\python.exe -m ps008 --verify
+```
+
+Convert the sample or a JSON intent to a NETCONF RPC, or validate a NETCONF
+intent file through the normal workflow:
+
+```powershell
+.\.venv\Scripts\python.exe -m ps008 --netconf
+.\.venv\Scripts\python.exe -m ps008 examples/netconf_add_route.xml --state-file .ps008/state.json
+```
+
 For GNS3 lab setup and the supported workflow, see [`src/docs/GNS3_SETUP.md`](src/docs/GNS3_SETUP.md). The judge walkthrough is in [`src/docs/DEMO.md`](src/docs/DEMO.md), and security boundaries are documented in [`src/docs/SECURITY.md`](src/docs/SECURITY.md).
 
 ## Bibliography

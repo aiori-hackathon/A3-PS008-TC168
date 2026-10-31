@@ -18,10 +18,10 @@ gns3 = ["httpx>=0.27,<1", "netmiko>=4.4,<5"]
 ps008 = "ps008.cli:main"
 
 [tool.setuptools.package-data]
-ps008 = ["assets/*.html", "assets/*.css", "assets/*.js", "assets/*.svg"]
+ps008 = ["assets/*.html", "assets/*.css", "assets/*.js", "assets/*.svg", "yang/*.yang"]
 
 [tool.setuptools.packages.find]
-include = ["ps008"]
+include = ["ps008*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

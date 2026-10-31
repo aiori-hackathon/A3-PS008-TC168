@@ -4,9 +4,11 @@ from dataclasses import asdict
 from pathlib import Path
 
 from .deployment import DeploymentManager
+from .generator import parse_request
 from .lab import DigitalTwin, Route
 from .state import StateStore
 from .workflow import run_workflow
+from .yang.netconf import intent_to_netconf_xml, netconf_xml_to_intent
 
 ADD_REQUEST = {
     "intent_type": "add_static_route", "source": "R1", "destination": "10.20.0.0/24",
@@ -66,7 +68,7 @@ def run_scenarios(scenario: str) -> list[dict]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="PS-008 reviewed network configuration agent")
-    parser.add_argument("request", nargs="?", help="JSON request file")
+    parser.add_argument("request", nargs="?", help="JSON or NETCONF XML request file")
     parser.add_argument("--state-file", default=".ps008/state.json", help="local simulated lab state file")
     parser.add_argument("--demo", action="store_true", help="run all demonstration scenarios")
     parser.add_argument("--web", action="store_true", help="serve the local review dashboard")
@@ -74,11 +76,39 @@ def main() -> int:
     parser.add_argument("--gns3-inventory", help="local inventory for GNS3 dashboard/device review or discovery")
     parser.add_argument("--observe-ios", action="store_true", help="collect read-only IOS evidence over SSH in CLI mode")
     parser.add_argument(
+        "--test-12", "--verify",
+        dest="test_12",
+        action="store_true",
+        help="run the 12 mandatory AIORI-3 test scenarios and output results",
+    )
+    parser.add_argument(
+        "--netconf",
+        action="store_true",
+        help="convert the supplied or sample intent to an RFC 6241 NETCONF XML RPC message",
+    )
+    parser.add_argument(
         "--scenario",
         choices=("success", "remove", "rejected", "invalid", "rollback", "full"),
         help="run a specific non-interactive scenario",
     )
     args = parser.parse_args()
+
+    if args.test_12:
+        from .suite import run_all
+        return run_all()
+
+    if args.netconf:
+        raw = ADD_REQUEST
+        if args.request:
+            content = Path(args.request).read_text(encoding="utf-8")
+            if content.strip().startswith("<"):
+                parsed_req = netconf_xml_to_intent(content)
+                print(json.dumps(asdict(parsed_req), indent=2))
+                return 0
+            raw = json.loads(content)
+        parsed_intent = parse_request(raw)
+        print(intent_to_netconf_xml(parsed_intent))
+        return 0
 
     if args.observe_ios and not args.gns3_inventory:
         parser.error("--observe-ios requires --gns3-inventory")
@@ -111,10 +141,15 @@ def main() -> int:
         print(json.dumps(run_scenarios(args.scenario or "full"), indent=2))
         return 0
     if not args.request:
-        parser.error("provide a JSON request file or use --demo/--scenario")
+        parser.error("provide a JSON request file or use --demo/--scenario/--test-12")
 
     try:
-        data = json.loads(Path(args.request).read_text(encoding="utf-8"))
+        content = Path(args.request).read_text(encoding="utf-8")
+        if content.strip().startswith("<"):
+            req_obj = netconf_xml_to_intent(content)
+            data = asdict(req_obj)
+        else:
+            data = json.loads(content)
         store = StateStore(args.state_file)
         twin = store.load()
         manager = DeploymentManager(twin, store)

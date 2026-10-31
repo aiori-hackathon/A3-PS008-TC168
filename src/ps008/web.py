@@ -49,8 +49,16 @@ def create_app(state_file=".ps008/state.json", gns3_inventory=None, *, console=N
             if not secrets.compare_digest(supplied, request.state.session["csrf"]):
                 return JSONResponse({"error": "Invalid session CSRF token"}, status_code=403)
             # Bound untrusted input before the parser or persistent review store.
-            if len(await request.body()) > 16384:
-                return JSONResponse({"error": "Request exceeds 16 KiB limit"}, status_code=413)
+            content_length = request.headers.get("content-length")
+            if content_length:
+                try:
+                    body_length = int(content_length)
+                except ValueError:
+                    return JSONResponse({"error": "Invalid Content-Length header"}, status_code=400)
+                if body_length < 0:
+                    return JSONResponse({"error": "Invalid Content-Length header"}, status_code=400)
+                if body_length > 16384:
+                    return JSONResponse({"error": "Request exceeds 16 KiB limit"}, status_code=413)
         response = await call_next(request)
         if fresh:
             response.set_cookie("ps008_session", session_id, httponly=True, samesite="strict", max_age=28800)
@@ -148,6 +156,31 @@ def create_app(state_file=".ps008/state.json", gns3_inventory=None, *, console=N
     @app.get("/api/trace")
     def trace(request: Request, source: str, destination: str):
         return service(request).trace(source, destination)
+
+    @app.get("/api/tests")
+    def tests_suite():
+        from .suite import TEST_CASES
+        import time
+        results = []
+        for num, category, desc, func in TEST_CASES:
+            t0 = time.perf_counter()
+            try:
+                note = func()
+                status = "PASS"
+            except Exception as exc:
+                note = str(exc)
+                status = "FAIL"
+            elapsed = (time.perf_counter() - t0) * 1000
+            results.append({
+                "test_number": num,
+                "category": category,
+                "description": desc,
+                "status": status,
+                "evidence": note,
+                "duration_ms": round(elapsed, 2),
+            })
+        passed = sum(1 for r in results if r["status"] == "PASS")
+        return {"total": len(results), "passed": passed, "failed": len(results) - passed, "results": results}
 
     @app.get("/api/audit")
     def audit(request: Request):

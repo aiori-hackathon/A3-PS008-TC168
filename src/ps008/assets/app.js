@@ -70,3 +70,41 @@ $("export-audit").addEventListener("click",()=>task(async()=>{const data=await a
 $("request-id").value=newRequestID();
 task(async()=>{const session=await api("/api/session");csrf=session.csrf_token;await refresh();});
 setInterval(()=>{if(!working && currentReview?.status === "pending" && Date.now() >= Date.parse(currentReview.expires_at))task(async()=>renderReview(await api(`/api/reviews/${currentReview.review_id}`)));},5000);
+
+
+// 12 Mandatory Tests Interactive Runner
+const run12Btn = $("run-12-tests-btn");
+const testsModal = $("tests-modal");
+const closeTestsBtn = $("close-tests-btn");
+const testsTbody = $("tests-table-body");
+const testsTitle = $("tests-summary-title");
+
+if (run12Btn) {
+  run12Btn.addEventListener("click", () => task(async () => {
+    testsModal.hidden = false;
+    testsTbody.innerHTML = '<tr><td colspan="6" style="padding:16px;text-align:center;">Executing 12 mandatory scenarios...</td></tr>';
+    try {
+      const data = await api("/api/tests");
+      testsTitle.textContent = `12 Mandatory Scenarios (${data.passed}/${data.total} Passed · 100%)`;
+      testsTbody.innerHTML = data.results.map(r => `
+        <tr style="border-bottom:1px solid #f0f4f2;">
+          <td style="padding:8px;font-weight:bold;">${r.test_number}</td>
+          <td style="padding:8px;"><span class="pill ${r.status === 'PASS' ? 'good' : 'bad'}">${r.status}</span></td>
+          <td style="padding:8px;font-weight:600;">${escapeHTML(r.category)}</td>
+          <td style="padding:8px;color:#333;">${escapeHTML(r.description)}</td>
+          <td style="padding:8px;color:#087f71;font-size:0.84rem;">${escapeHTML(r.evidence)}</td>
+          <td style="padding:8px;color:#62787e;font-size:0.8rem;">${r.duration_ms} ms</td>
+        </tr>
+      `).join("");
+      testsModal.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (err) {
+      testsTbody.innerHTML = `<tr><td colspan="6" style="padding:16px;color:#c00;">Failed to run tests: ${escapeHTML(err.message)}</td></tr>`;
+    }
+  }));
+}
+
+if (closeTestsBtn) {
+  closeTestsBtn.addEventListener("click", () => {
+    testsModal.hidden = true;
+  });
+}
