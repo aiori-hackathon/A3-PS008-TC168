@@ -29,6 +29,8 @@ Use the repository virtual environment. Non-interactive CLI demos script approva
 
 ## GNS3 device demonstration (only after lab setup)
 
+For the working OpenWrt observation demo, run `python tools/setup_three_router_gns3_lab.py` and `python tools/prepare_openwrt_demo.py` on the prepared laptop. Open `/gns3`, click **Refresh live routers** to show three timestamped interface and route snapshots, then **Send R1 → R3 ping** and read the actual reply count aloud. Enable **Auto-refresh** for minute-by-minute observation. Run `python tools/record_gns3_packet_demo.py` for captures of both links, and show ICMP Echo requests and replies in Wireshark. The saved successful run received 4/4 replies and both links recorded four requests and four replies. Earlier failed captures remain diagnostics, so identify each run by timestamp. This is live OpenWrt observation and probing, with static routes prepared through local consoles.
+
 Use an isolated, disposable three-router GNS3 project and follow [GNS3_SETUP.md](GNS3_SETUP.md). First show controller/device evidence badges and the captured RIB. Preview the route and distinguish the modeled path prediction from device evidence. Create a review; before approval, point out that the operation journal contains the exact candidate and no command has been sent. Approve, then show IOS command result, route read-back, and the configured endpoint ping result. Capture again and show drift handling. Remove the route only after its app-managed ownership is visible. Demonstrate an interrupted operation with fakes in tests, not by intentionally disrupting a judge's live lab. Current browser screenshots and automated browser checks use synthetic rehearsal; they are not GNS3 proof.
 
 ## Questions to prepare for

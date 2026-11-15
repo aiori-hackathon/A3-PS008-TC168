@@ -39,15 +39,27 @@ The software-twin workflow is deterministic and does not emulate IOS. The GNS3 p
 
 ## Is the agent working correctly?
 
-The simulator path has transactional twin-state checks. The current full suite passes 127 tests. The live GNS3 controller was observed on this Windows machine (GNS3 2.2.61 with local Basic authentication), and the dashboard's controller-capture endpoint discovered the running OpenWrt probe node. A separate two-VPCS GNS3 smoke lab also passed five real ping replies across its GNS3 link.
+The simulator path has transactional twin-state checks. The current full suite passes 127 tests. In the isolated GNS3 2.2.61 lab, three OpenWrt router processes ran as R1–R2–R3. A fresh R1-to-R3 console probe received 4/4 replies through R2, and packet captures on both links recorded Echo requests and replies. The `/gns3` dashboard also read the router interfaces, routes, and 4/4 ping result from their live consoles.
 
-These live checks validate controller discovery and GNS3 packet connectivity; they do not validate the router agent's write path. An OpenWrt image boots and a static route was manually added/read back from its console, but the IOS-only observation and command adapter does not support OpenWrt. The OpenWrt router-to-router ping did not pass, and no Cisco IOS-compatible image or reachable IOS SSH management lab is installed. Therefore live agent route deployment remains unverified and must not be presented as successful. Dynamic routes, IPv6, ECMP, arbitrary commands, and unowned-route removal are blocked. The local JSON journal is not a signed or tamper-proof compliance log.
+These live checks validate router observation and packet connectivity. The preparation helper configures this isolated OpenWrt lab over its local consoles; the approval-gated write adapter is designed for Cisco IOS-compatible routers and has been verified with offline device fakes. Its live IOS deployment remains a future validation step. Dynamic routes, IPv6, ECMP, arbitrary commands, and unowned-route removal are outside the current scope. The local JSON journal is not a signed compliance log.
 
 ## GNS3 lab and optional LLM
 
 ### Local OpenWrt recording lab
 
 The `/gns3` page includes a **Live GNS3 / OpenWrt lab** panel for the isolated `AIORI-PS008-Three-Router-Lab` project created by `python tools/setup_three_router_gns3_lab.py`. It reads the started R1/R2/R3 QEMU consoles, displays their IPv4 interfaces and routes, and can run a four-packet R1-to-R3 ping. Captures retain the latest 20 results in the ignored `.ps008/openwrt-lab-captures.json` file and can be exported as JSON. The panel is read-only apart from the explicitly requested ping; it does not deploy route changes. Set `PS008_OPENWRT_PROJECT_ID` before starting the web app if your GNS3 project has a different UUID. A ping result is evidence of that run only; a green GNS3 link does not prove routed connectivity.
+
+For a repeatable local demonstration, start GNS3, then run the following commands from the project root. The preparation script waits for the OpenWrt consoles, restores the link addresses and routes after a restart, enables R2 forwarding inside this isolated lab, and saves the observed ping result to `.ps008/openwrt-preparation-evidence.json`. It fails if all four replies do not return.
+
+```powershell
+.\.venv\Scripts\python.exe tools/setup_three_router_gns3_lab.py
+.\.venv\Scripts\python.exe tools/prepare_openwrt_demo.py
+.\.venv\Scripts\python.exe -m ps008 --web
+```
+
+Open `http://127.0.0.1:8000/gns3`, use **Refresh live routers** and **Send R1 → R3 ping**, and optionally switch on **Auto-refresh** for a new console snapshot every minute. Start captures on both GNS3 links to inspect the same traffic in Wireshark. The setup uses the OpenWrt image already installed on this development machine; another computer needs that image and its own GNS3 project ID.
+
+To record a fresh packet proof on both links after preparation, run `.\.venv\Scripts\python.exe tools/record_gns3_packet_demo.py`. It starts GNS3 link captures, requests the console ping, stops capture in a cleanup step, and writes the observed result and capture paths to `.ps008/openwrt-packet-demo.json`.
 
 The GNS3 review flow is at `/gns3`. Its live write path requires an isolated three-router IOS-compatible lab, independent SSH management addresses, verified host keys, environment-based credentials, and a source-defined endpoint probe. The example inventory is a template, not a ready-to-run lab. Follow the [setup and limitations](docs/GNS3_SETUP.md); never connect this prototype to production routers.
 
@@ -82,8 +94,8 @@ Interactive CLI deployment requires `yes` or `y`. Default state: `.ps008/state.j
 
 - **Automated tests:** [JUnit XML report](output/test-results.xml) from the latest local run: 127 passed, 0 failed (1 dependency deprecation warning). Rerun with the Pytest command below.
 - **Three-router topology:** [GNS3 screenshot](docs/evidence/gns3-three-router-topology.png) and the repeatable [lab setup helper](tools/setup_three_router_gns3_lab.py). The screenshot shows the started R1–R2–R3 OpenWrt nodes and links.
-- **Live router state:** [timestamped OpenWrt console captures](docs/evidence/openwrt-lab-captures.json) contain interface, route, and optional ping output for each capture. The dashboard labels these as console-observed evidence and can export the latest snapshot.
-- **Packet captures:** [R1–R2](docs/evidence/R1-R2.pcap) and [R2–R3](docs/evidence/R2-R3.pcap) can be opened in Wireshark. The recorded R1-to-R3 console ping received 0/4 replies; use the captures to investigate packet flow rather than infer success from green links. A separate [VPCS smoke-lab report](docs/evidence/gns3-smoke-evidence.json) records five replies across a direct GNS3 link.
+- **Live router state and ping:** [timestamped 4/4 OpenWrt console result](docs/evidence/openwrt-routed-ping-success.json) records interfaces and routes for all three routers and R1's four replies from R3. The [dashboard capture history](docs/evidence/openwrt-lab-captures.json) includes earlier failed diagnostics and later live snapshots; each result is labeled with its own time and reply count.
+- **Packet captures:** open the successful run from [R1–R2](docs/evidence/R1-R2-routed-success.pcap) and [R2–R3](docs/evidence/R2-R3-routed-success.pcap) in Wireshark and filter `icmp`. Each link recorded four Echo requests and four Echo replies during the four-packet run. A separate [VPCS smoke-lab report](docs/evidence/gns3-smoke-evidence.json) records five replies across a direct link.
 - **Review workflow:** [dashboard screenshot](docs/images/dashboard.png), [review screenshot](docs/images/review.png), and [judge walkthrough](docs/DEMO.md) show the software-twin proposal, modeled impact, approval/rejection, and result. The GNS3 IOS adapter is exercised by offline tests; a live IOS route deployment is a future validation step.
 
 The software-twin screenshots, mocked adapter tests, GNS3 controller observations, and OpenWrt packet captures represent distinct evidence sources. The linked files let reviewers inspect each result and reproduce the supported tests.

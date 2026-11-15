@@ -94,10 +94,10 @@ flowchart LR
 - The software twin models a three-router topology and checks forwarding impact across relevant prefix ranges.
 - The GNS3 controller was discovered through the dashboard on the development laptop.
 - Two VPCS endpoints in an isolated GNS3 smoke lab exchanged ping replies across their virtual link.
-- A three-router OpenWrt GNS3 project supports live console observation, on-demand ping tests, timestamped capture history, and JSON evidence export through the dashboard.
+- A three-router OpenWrt GNS3 project provides live console observation, on-demand ping tests, minute-by-minute dashboard refresh, timestamped capture history, and JSON evidence export. The prepared R1-to-R3 path received 4/4 ping replies, with matching ICMP traffic on both GNS3 links.
 - The IOS adapter implements a restricted, approval-gated IPv4 static-route workflow with state checks, read-back, configured probes, and conservative recovery states.
 
-The automated test result, controller observation, and VPCS connectivity check are distinct evidence types and are labeled accordingly in the project documentation.
+The automated tests, software-twin workflow, live OpenWrt console observation, and packet captures are distinct evidence types and are labeled accordingly in the project documentation.
 
 ## AIORI-3 Deployment Timeline
 
@@ -107,7 +107,7 @@ The automated test result, controller observation, and VPCS connectivity check a
 | Review lifecycle, approval/rejection, audit, and simulator recovery | Implemented and tested |
 | GNS3 controller discovery | Observed locally through the dashboard |
 | GNS3 VPCS link connectivity | Demonstrated with live ping replies |
-| Three-router OpenWrt lab observation | Dashboard capture and evidence export implemented |
+| Three-router OpenWrt lab observation | Three live routers, dashboard capture, 4/4 routed ping, and two-link packet evidence |
 | IOS-compatible route operations | Adapter workflow implemented; live-lab validation is a future milestone |
 
 ## Future Scope
@@ -123,8 +123,8 @@ The automated test result, controller observation, and VPCS connectivity check a
 
 - **Automated tests:** [JUnit XML report](src/output/test-results.xml) from a fresh run: 127 passed, 0 failed (1 dependency deprecation warning). Use the Pytest command below to reproduce it.
 - **Three-router GNS3 lab:** [topology screenshot](src/docs/evidence/gns3-three-router-topology.png) and [repeatable setup helper](src/tools/setup_three_router_gns3_lab.py) show how R1, R2, and R3 were created and started.
-- **Live router evidence:** [timestamped OpenWrt captures](src/docs/evidence/openwrt-lab-captures.json) record console-observed interfaces, routes, and requested ping results. The dashboard also exports its latest capture.
-- **Packet evidence:** open the [R1–R2](src/docs/evidence/R1-R2.pcap) and [R2–R3](src/docs/evidence/R2-R3.pcap) captures in Wireshark. The recorded R1-to-R3 ping received 0/4 replies. The separate [VPCS smoke-lab report](src/docs/evidence/gns3-smoke-evidence.json) records five replies across a direct link.
+- **Live router evidence:** the [successful timestamped console result](src/docs/evidence/openwrt-routed-ping-success.json) records R1, R2, and R3 addresses and routes plus 4/4 R1-to-R3 ping replies. The [dashboard capture history](src/docs/evidence/openwrt-lab-captures.json) also retains earlier diagnostic runs.
+- **Packet evidence:** open the successful [R1–R2](src/docs/evidence/R1-R2-routed-success.pcap) and [R2–R3](src/docs/evidence/R2-R3-routed-success.pcap) captures in Wireshark and filter `icmp`. Each link contains four Echo requests and four Echo replies from a four-packet R1-to-R3 run. The separate [VPCS smoke-lab report](src/docs/evidence/gns3-smoke-evidence.json) records five replies across a direct link.
 - **Agent workflow:** [dashboard](src/docs/images/dashboard.png), [review screen](src/docs/images/review.png), and [judge walkthrough](src/docs/DEMO.md) document the software-twin proposal, modeled paths, human decision, and result. Mocked device tests cover the IOS adapter; live IOS deployment validation remains in future scope.
 
 Each link identifies what was observed or tested. The artifacts distinguish software-twin results, mocked adapter behavior, controller observations, and live OpenWrt console/packet evidence.
@@ -151,6 +151,8 @@ cd src
 ```
 
 For GNS3 lab setup and the supported workflow, see [`src/docs/GNS3_SETUP.md`](src/docs/GNS3_SETUP.md). The judge walkthrough is in [`src/docs/DEMO.md`](src/docs/DEMO.md), and security boundaries are documented in [`src/docs/SECURITY.md`](src/docs/SECURITY.md).
+
+On the prepared development laptop, run `python tools/setup_three_router_gns3_lab.py` and `python tools/prepare_openwrt_demo.py` from `src` to start and configure the isolated OpenWrt lab. Open `/gns3` for live router snapshots and ping. Run `python tools/record_gns3_packet_demo.py` to capture both GNS3 links during a fresh probe. These OpenWrt observations are separate from the IOS approval-gated device adapter.
 
 ## Bibliography
 

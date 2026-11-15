@@ -7,6 +7,7 @@ import os
 import re
 import socket
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -33,8 +34,8 @@ def _controller():
 def _command(port, command):
     """Send one fixed observation command to a localhost GNS3 console."""
     with socket.create_connection(("127.0.0.1", port), timeout=4) as stream:
-        stream.settimeout(0.3)
-        def read_for(seconds):
+        stream.settimeout(0.25)
+        def read_for(seconds, expect_prompt=False, done_marker=None):
             end = time.monotonic() + seconds
             parts = []
             while time.monotonic() < end:
@@ -47,11 +48,23 @@ def _command(port, command):
                 parts.append(part)
                 if sum(map(len, parts)) > 24000:
                     break
+                received = b"".join(parts)
+                if done_marker and re.search(rb"\r?\n" + done_marker + rb"\r?\nroot@OpenWrt:~#", received):
+                    break
+                if expect_prompt and b"root@OpenWrt:~#" in received:
+                    break
             return b"".join(parts).decode("utf-8", "replace")
         stream.sendall(b"\n")
-        read_for(1)
-        stream.sendall((command + "\n").encode("ascii"))
-        return read_for(7 if command.startswith("ping ") else 2).strip()[-12000:]
+        ready = read_for(20, expect_prompt=True)
+        if "root@OpenWrt:~#" not in ready:
+            raise ValueError("OpenWrt console is still booting or has no root prompt")
+        marker = ("__PS008_DONE_" + uuid.uuid4().hex[:12] + "__").encode("ascii")
+        stream.sendall(command.encode("ascii") + b"; echo " + marker + b"\n")
+        command_timeout = 45 if command == "/etc/init.d/firewall stop" else (20 if command.startswith("ping ") else 15)
+        result = read_for(command_timeout, done_marker=marker).strip()[-12000:]
+        if not re.search(r"\r?\n" + marker.decode("ascii") + r"\r?\nroot@OpenWrt:~#", result):
+            raise ValueError(f"OpenWrt console did not complete the {command.split()[0]} command")
+        return result
 
 
 def capture(ping=False):

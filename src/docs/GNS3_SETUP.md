@@ -1,5 +1,11 @@
 # Connect the PS-008 dashboard to GNS3
 
+## Repeatable three-router OpenWrt presentation lab
+
+On the prepared Windows laptop, `python tools/setup_three_router_gns3_lab.py` creates or reopens `AIORI-PS008-Three-Router-Lab`, starts R1/R2/R3, connects R1–R2–R3, and assigns router symbols in GNS3. Run `python tools/prepare_openwrt_demo.py` after the routers have booted. The preparation script checks for OpenWrt shell prompts, assigns the two link subnets, enables forwarding on R2 inside the isolated lab, installs R1/R3 return routes, then records an actual R1-to-R3 ping under `.ps008/`. It exits with an error if the four-packet probe fails. Because these console settings are in the running routers, repeat preparation after a restart.
+
+Open `/gns3` and use the **Live GNS3 / OpenWrt lab** panel to capture interfaces, routes, and a new ping. **Auto-refresh** samples router state once per minute while that browser page is open; each capture is timestamped and retained in the local evidence history. Capture the two GNS3 links in Wireshark for packet-level evidence. This panel reads OpenWrt console state and sends ping only; the separate approval-gated device-write adapter remains IOS-specific.
+
 Implemented: dashboard at `/gns3`, controller/device evidence capture, strict IOS route normalization, modeled preview, separate human review, allowlisted IOS static-route writes, read-back verification, configured probes for additions, stale-state checks, route ownership, durable device-operation journal, and conservative recovery. The software simulator remains at `/`. Local GNS3 controller discovery and a VPCS link have now been verified live; the IOS device-write path has not. OpenAI calls are deferred.
 
 ## Quick live GNS3 smoke test
@@ -12,7 +18,7 @@ python tools/setup_gns3_smoke_lab.py
 
 This creates or reuses the isolated `AIORI-PS008-Connectivity-Smoke` project, starts two VPCS endpoints, connects them, assigns `10.99.0.10/24` and `10.99.0.11/24`, and records ping results at `.ps008/gns3-smoke-evidence.json`. The observed run returned five ping replies. It proves the local controller, VPCS executable, link, and packet path work; it does not exercise IOS observation or approved route deployment.
 
-An OpenWrt 25.12 x86-64 image was also booted in a separate probe project using local QEMU software emulation. This is useful for checking GNS3/QEMU startup, but the PS-008 device adapter currently accepts Cisco IOS output and IOS commands only. The OpenWrt static route console experiment did not produce a successful router-to-router endpoint ping, so it is not agent deployment evidence. Local Windows QEMU software emulation is slow and uses significant memory; the configured GNS3 VM profile was unavailable on this machine.
+The isolated three-router project uses locally emulated OpenWrt 25.12 x86-64 images. After `prepare_openwrt_demo.py`, a fresh R1-to-R3 routed ping returned 4/4 replies through R2. `python tools/record_gns3_packet_demo.py` captures both links during another ping and saves the result to `.ps008/openwrt-packet-demo.json`. These results establish live observation and connectivity; the separate approval-gated device adapter accepts Cisco IOS output and commands.
 
 ## Try the dashboard now, without a router image
 
@@ -131,6 +137,6 @@ For the local controller-only dashboard demonstration prepared on the developmen
 
 ## Verification and remaining gates
 
-Offline tests use HTTP/SSH/device fakes and cover identity, strict parser behavior, approval/rejection, no write before approval, add/remove, stale state, timeout before/after a possible write, read-back, failed probes, scoped recovery, and replay. The current full suite passes 127 tests. Live evidence from this laptop confirms GNS3 2.2.61 controller discovery, two running OpenWrt nodes during the probe, and five VPCS ping replies in the separate smoke project. No successful end-to-end routed ping or approved agent route write has been observed.
+Offline tests use HTTP/SSH/device fakes and cover identity, strict parser behavior, approval/rejection, no write before approval, add/remove, stale state, timeout before/after a possible write, read-back, failed probes, scoped recovery, and replay. The current full suite passes 127 tests. Live evidence from this laptop confirms three started OpenWrt routers, a routed R1-to-R3 ping with 4/4 replies, matching ICMP requests and replies on both GNS3 links, and live dashboard console snapshots. The separate VPCS smoke test received five replies. A live approved IOS route write remains to be validated.
 
 Remaining gates: build a three-router IOS-compatible lab, verify SSH host keys and exact parser output, prove route read-back and configured endpoint probes for approved add and owned-route removal, then record device-observed evidence. OpenWrt is not supported by the current device adapter. The OpenAI proposal interface comes later, with schema validation and its own security/evaluation plan.

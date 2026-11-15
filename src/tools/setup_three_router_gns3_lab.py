@@ -25,11 +25,15 @@ def main():
                 raise RuntimeError(f"Unexpected existing node: {name}")
             nodes[name] = matches[0] if matches else request(client, "POST", f"{base}/nodes", {
                 "name": name, "node_type": "qemu", "compute_id": "local", "x": index * 260 - 260, "y": 0,
+                "symbol": ":/symbols/classic/router.svg",
                 "properties": {"hda_disk_image": IMAGE, "hda_disk_interface": "ide",
                                "qemu_path": QEMU, "platform": "x86_64", "ram": 256,
                                "adapters": 4, "adapter_type": "virtio-net-pci",
                                "console_type": "telnet", "options": "-nographic"},
             })
+            if nodes[name].get("symbol") != ":/symbols/classic/router.svg":
+                nodes[name] = request(client, "PUT", f"{base}/nodes/{nodes[name]['node_id']}",
+                                      {"symbol": ":/symbols/classic/router.svg"})
         links = request(client, "GET", f"{base}/links")
         for left, right, left_port, right_port in (("R1", "R2", 1, 1), ("R2", "R3", 2, 1)):
             endpoints = {nodes[left]["node_id"], nodes[right]["node_id"]}
