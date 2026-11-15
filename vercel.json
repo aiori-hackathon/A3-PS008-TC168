@@ -1,4 +1,5 @@
 {
+  "buildCommand": "echo Preparing NexaRoute static site",
   "cleanUrls": true,
   "trailingSlash": false,
   "outputDirectory": "site"
