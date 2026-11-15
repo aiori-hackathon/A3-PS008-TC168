@@ -91,6 +91,7 @@ flowchart LR
 
 - Automated tests cover the simulator, review lifecycle, and mocked GNS3 controller/device workflows; the commands below reproduce the current test result.
 - The local dashboard supports repeatable judge-demo scenarios, route preview, approval/rejection, audit review, and evidence export.
+- The dashboard includes a collapsible navigation rail, state-aware workflow steps, router-linked source selection, filtered routing tables, audit search, and a mobile drawer.
 - The software twin models a three-router topology and checks forwarding impact across relevant prefix ranges.
 - The GNS3 controller was discovered through the dashboard on the development laptop.
 - Two VPCS endpoints in an isolated GNS3 smoke lab exchanged ping replies across their virtual link.

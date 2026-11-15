@@ -20,6 +20,8 @@ Open http://127.0.0.1:8000. The application binds to your computer's loopback in
 
 Select **Judge demo** and choose **Add route**. Inspect the generated command and before/after forwarding paths, then select **Approve & deploy**. Try rejection, conflicts, loops, removal, deployment failure, and verification failure. Each preset resets only your session's demo lab; the persistent lab is separate.
 
+The dashboard has a collapsible navigation rail for **Control Center**, **Change Review**, **Routing Tables**, and **Audit Trail**. The workflow bar follows review state, router nodes select the intent source and routing filter, and the routing tabs show either all routers or one router. The revision badge opens history; `Ctrl+K` or `⌘K` focuses the trace action. On narrow screens, the rail opens as a drawer. Proposed routes are labeled **preview** in the table until approval.
+
 ## What works
 
 - Two provisional intents: `add_static_route` and `remove_static_route`.
