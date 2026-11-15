@@ -81,6 +81,7 @@ document.querySelectorAll("[data-scenario]").forEach(button=>button.addEventList
 $("refresh").addEventListener("click",()=>task(async()=>{if(currentReview)renderReview(await api(`/api/reviews/${currentReview.review_id}`));await refresh();}));
 $("audit").addEventListener("click",event=>{const button=event.target.closest("[data-review]");if(button)task(async()=>{const review=await api(`/api/reviews/${button.dataset.review}`);fillIntent(review.candidate.request);renderReview(review);await refresh();$("review-status").scrollIntoView({block:"center",behavior:"smooth"});});});
 $("export-audit").addEventListener("click",()=>task(async()=>{const data=await api("/api/audit");const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));const a=document.createElement("a");a.href=url;a.download=`ps008-${currentLab.workspace}-audit.json`;a.click();URL.revokeObjectURL(url);}));
+setView("control");
 $("request-id").value=newRequestID();
 task(async()=>{const session=await api("/api/session");csrf=session.csrf_token;await refresh();});
 setInterval(()=>{if(!working && currentReview?.status === "pending" && Date.now() >= Date.parse(currentReview.expires_at))task(async()=>renderReview(await api(`/api/reviews/${currentReview.review_id}`)));},5000);
