@@ -6,6 +6,22 @@ The customer-facing site, **[NetKavach](https://netkavach.vercel.app/)**, includ
 
 An explainable, approval-gated assistant for IPv4 static-route changes. Operators can inspect predicted forwarding paths, review the exact proposed command, and retain control of the deployment decision. The project combines a deterministic three-router software twin, a local dashboard, live GNS3/OpenWrt lab observation, and a Cisco IOS device adapter.
 
+## Product architecture
+
+The product architecture is designed to evolve toward a professional component-based frontend while preserving the existing Python application and live-lab workflow:
+
+```text
+React + TypeScript + Vite
+        ↓
+Tailwind CSS + Framer Motion
+        ↓
+FastAPI backend APIs
+        ↓
+GNS3 adapter and network lab
+```
+
+The current customer-facing site remains a lightweight static implementation in `site/`, hosted on Vercel. The architecture above defines the planned frontend layer for reusable dashboard components, typed API integration, responsive styling, and motion design; it does not change the current working implementation.
+
 ## Project demonstrations
 
 - [Project understanding and Proposed solution](https://youtu.be/tZcXjvHfEpg?si=Nb0RlGkdUhJWbuEH) — team introduction, problem understanding, and proposed approach.
