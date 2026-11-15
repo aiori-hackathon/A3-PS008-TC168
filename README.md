@@ -1,6 +1,6 @@
 # PS-008 Network Management Agent
 
-The customer-facing site, **[NetKavach](https://netkavack.vercel.app/)**, includes a product overview, workflow guide, learning videos, local setup commands, and a GNS3 walkthrough. Vercel serves the static site from `site/`. The interactive Python dashboard runs locally from a clone and connects to the user's own GNS3 controller and lab.
+The customer-facing site, **[NetKavach](https://netkavach.vercel.app/)**, includes a product overview, workflow guide, learning videos, local setup commands, and a GNS3 walkthrough. Vercel serves the static site from `site/`. The interactive Python dashboard runs locally from a clone and connects to the user's own GNS3 controller and lab.
 
 **AIORI-3 hackathon project | Track: PS-008 | Submission repository: A3-PS008-TC168**
 
