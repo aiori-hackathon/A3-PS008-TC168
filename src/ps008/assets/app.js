@@ -43,7 +43,59 @@ function renderReview(review) {
   $("review-status").textContent=review.status.replaceAll("_"," "); $("review-status").className=`pill ${["pending","deployed"].includes(review.status)?"good":"bad"}`;
   const validation=review.validation;
   const checks=validation.errors.length ? validation.errors.map(x=>`<div class="check error">Blocked · ${escapeHTML(x)}</div>`).join("") : validation.checks.map(x=>`<div class="check">Passed · ${escapeHTML(x.name)}<br>${escapeHTML(x.detail)}</div>`).join("");
-  $("validation").innerHTML=checks+validation.warnings.map(x=>`<div class="check warning">Warning · ${escapeHTML(x)}</div>`).join("");
+  // Render Transaction Ledger (NSO Benchmark)
+  if ($("tx-id-badge")) $("tx-id-badge").textContent = review.candidate.transaction_id || "TX-STANDARD";
+  if ($("tx-rollback-cmd")) {
+    const rb = review.candidate.rollback_commands || [];
+    $("tx-rollback-cmd").textContent = rb.length ? rb.join("\n") : "Pre-change snapshot baseline restore";
+  }
+
+  // Render Blast Radius & Risk Assessment (Forward Networks Benchmark)
+  const br = validation.blast_radius;
+  if ($("blast-radius-box") && br && Object.keys(br).length) {
+    const badgeClass = br.risk_level === "LOW" ? "good" : (br.risk_level === "CRITICAL" ? "bad" : "warning");
+    $("blast-radius-box").innerHTML = `
+      <div style="padding:0.75rem;background:#f7faf9;border-radius:6px;border:1px solid #e1e8e5;font-size:0.82rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <strong style="color:#142d35;">FORWARD PREDICT · BLAST RADIUS</strong>
+          <span class="pill ${badgeClass}">RISK: ${escapeHTML(br.risk_level)} (${br.risk_score}/100)</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px;font-size:0.78rem;">
+          <div><small style="color:#62787e;display:block;">AFFECTED HOSTS</small><strong>${br.address_count}</strong></div>
+          <div><small style="color:#62787e;display:block;">PATH ROUTERS</small><strong>${escapeHTML(br.path_routers && br.path_routers.length ? br.path_routers.join(" → ") : review.candidate.router)}</strong></div>
+          <div><small style="color:#62787e;display:block;">TRANSIT HOPS</small><strong>${br.transit_hop_count}</strong></div>
+        </div>
+        <p style="margin:0;color:#333;font-size:0.78rem;">${escapeHTML(br.summary)}</p>
+      </div>
+    `;
+  } else if ($("blast-radius-box")) {
+    $("blast-radius-box").innerHTML = "";
+  }
+
+  // Render Safety Invariants (Batfish Benchmark)
+  const invs = validation.invariants || [];
+  if ($("invariants-box") && invs.length) {
+    $("invariants-box").innerHTML = `
+      <details style="padding:0.5rem 0.75rem;background:#fff;border:1px solid #e1e8e5;border-radius:6px;font-size:0.82rem;" open>
+        <summary style="font-weight:700;color:#087f71;cursor:pointer;">Batfish-Style Safety Contracts (${invs.filter(x=>x.status==='PASSED').length}/${invs.length} Passed)</summary>
+        <div style="margin-top:6px;">
+          ${invs.map(inv => `
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;border-bottom:1px solid #f0f0f0;">
+              <div>
+                <strong>${escapeHTML(inv.id)}: ${escapeHTML(inv.name)}</strong>
+                <p style="margin:0;font-size:0.75rem;color:#62787e;">${escapeHTML(inv.detail)}</p>
+              </div>
+              <span class="pill ${inv.status==='PASSED'?'good':'bad'}">${inv.status}</span>
+            </div>
+          `).join("")}
+        </div>
+      </details>
+    `;
+  } else if ($("invariants-box")) {
+    $("invariants-box").innerHTML = "";
+  }
+
+    $("validation").innerHTML=checks+validation.warnings.map(x=>`<div class="check warning">Warning · ${escapeHTML(x)}</div>`).join("");
   const traces=validation.impact.traces || [];
   const representative=traces.find(x=>x.before.destination.endsWith(".0")) || traces[0];
   $("impact").innerHTML=representative ? `<div class="impact-title">FORWARDING IMPACT · ${traces.length} PREFIX-BOUNDARY PROBES</div>`+["before","after"].map(key=>{const t=representative[key];return `<div class="path-row"><span class="label">${key.toUpperCase()}</span><span>${escapeHTML(t.path.join(" → "))}</span><span class="outcome ${t.outcome !== "reached" ? "bad":""}">${escapeHTML(labelOutcome(t.outcome))}</span></div>`;}).join("")+`<details><summary>All forwarding probes</summary>${traces.map(x=>`<p class="field-hint">${escapeHTML(x.after.destination)}: ${escapeHTML(x.after.path.join(" → "))} · ${escapeHTML(labelOutcome(x.after.outcome))}</p>`).join("")}</details>` : "";
@@ -122,4 +174,25 @@ if (closeTestsBtn) {
   closeTestsBtn.addEventListener("click", () => {
     testsModal.hidden = true;
   });
+}
+
+// Natural Language Ingress Handler
+const nlBtn = $("nl-submit-btn");
+const nlInput = $("nl-input");
+if (nlBtn && nlInput) {
+  nlBtn.addEventListener("click", () => task(async () => {
+    const text = nlInput.value.trim();
+    if (!text) return;
+    $("nl-hint").textContent = "Parsing intent through guarded NLP boundary...";
+    $("nl-hint").style.color = "#087f71";
+    try {
+      const intent = await api("/api/ingress/natural", { text });
+      fillIntent(intent);
+      $("nl-hint").textContent = "Intent parsed successfully! Click 'Generate & validate' below to model in twin.";
+      $("nl-hint").style.color = "#087f71";
+    } catch (err) {
+      $("nl-hint").textContent = `NLP Error: ${err.message}`;
+      $("nl-hint").style.color = "#c00";
+    }
+  }));
 }

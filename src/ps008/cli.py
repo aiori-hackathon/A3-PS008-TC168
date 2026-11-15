@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .deployment import DeploymentManager
 from .generator import parse_request
+from .ingress import parse_natural_intent
 from .lab import DigitalTwin, Route
 from .state import StateStore
 from .workflow import run_workflow
@@ -24,6 +25,8 @@ def _present(result: dict) -> dict:
             "request_id": result["candidate"].request.request_id,
             "router": result["candidate"].router,
             "commands": list(result["candidate"].commands),
+            "rollback_commands": list(result["candidate"].rollback_commands),
+            "transaction_id": result["candidate"].transaction_id,
             "change_summary": result["candidate"].change_summary,
             "base_revision": result["candidate"].base_revision,
         },
@@ -87,6 +90,10 @@ def main() -> int:
         help="convert the supplied or sample intent to an RFC 6241 NETCONF XML RPC message",
     )
     parser.add_argument(
+        "--natural", "-n",
+        help="parse and review an intent expressed in human natural language",
+    )
+    parser.add_argument(
         "--scenario",
         choices=("success", "remove", "rejected", "invalid", "rollback", "full"),
         help="run a specific non-interactive scenario",
@@ -113,7 +120,7 @@ def main() -> int:
     if args.observe_ios and not args.gns3_inventory:
         parser.error("--observe-ios requires --gns3-inventory")
     if args.gns3_inventory and not args.web:
-        if args.web or args.demo or args.scenario or args.request:
+        if args.web or args.demo or args.scenario or args.request or args.natural:
             parser.error("GNS3 observation cannot be combined with simulator actions")
         from .gns3 import Inventory, discover
         from .device_observation import observe_ios
@@ -140,22 +147,28 @@ def main() -> int:
     if args.demo or args.scenario:
         print(json.dumps(run_scenarios(args.scenario or "full"), indent=2))
         return 0
-    if not args.request:
-        parser.error("provide a JSON request file or use --demo/--scenario/--test-12")
+
+    if not args.request and not args.natural:
+        parser.error("provide a JSON request file, --natural prompt, or use --demo/--scenario/--test-12")
 
     try:
-        content = Path(args.request).read_text(encoding="utf-8")
-        if content.strip().startswith("<"):
-            req_obj = netconf_xml_to_intent(content)
+        if args.natural:
+            req_obj = parse_natural_intent(args.natural)
             data = asdict(req_obj)
         else:
-            data = json.loads(content)
+            content = Path(args.request).read_text(encoding="utf-8")
+            if content.strip().startswith("<"):
+                req_obj = netconf_xml_to_intent(content)
+                data = asdict(req_obj)
+            else:
+                data = json.loads(content)
+
         store = StateStore(args.state_file)
         twin = store.load()
         manager = DeploymentManager(twin, store)
         result = run_workflow(
             data,
-            lambda summary: input(f"{summary}\nType yes to approve: ").strip().lower() in {"y", "yes"},
+            lambda summary: input(f"\n{summary}\nType yes to approve: ").strip().lower() in {"y", "yes"},
             twin,
             manager,
         )

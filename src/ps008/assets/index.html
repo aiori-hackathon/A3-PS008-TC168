@@ -57,6 +57,16 @@
     <section class="card review-card"><div class="card-heading"><div><p class="eyebrow">03 / CHANGE REVIEW</p><h2>Evidence before execution.</h2></div><span id="review-status" class="pill">Awaiting intent</span></div>
       <div id="review-empty" class="empty"><span class="empty-icon">⌁</span><h3>Start with an intent.</h3><p>Your exact command, validation evidence, and forwarding impact will appear here.</p></div>
       <div id="review-content" hidden><p id="review-summary" class="review-summary"></p><p id="review-reason" class="field-hint"></p><div class="command-heading"><span>CANDIDATE CONFIGURATION</span><span id="review-meta"></span></div><pre id="commands"></pre>
+        <div id="transaction-box" class="transaction-box" style="margin:0.75rem 0;padding:0.75rem;background:#f7faf9;border-left:3px solid #087f71;border-radius:4px;font-size:0.82rem;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <strong style="color:#142d35;">TWO-PHASE TRANSACTION LEDGER (CISCO NSO STANDARD)</strong>
+            <span id="tx-id-badge" style="font-family:monospace;background:#e1ece8;padding:2px 6px;border-radius:4px;font-weight:600;">TX-PENDING</span>
+          </div>
+          <div style="color:#62787e;margin-top:4px;">Pre-computed Compensating Rollback:</div>
+          <code id="tx-rollback-cmd" style="display:block;margin-top:2px;font-size:0.8rem;color:#9b1c1c;">no ip route ...</code>
+        </div>
+        <div id="blast-radius-box" style="margin:0.75rem 0;"></div>
+        <div id="invariants-box" style="margin:0.75rem 0;"></div>
         <div id="validation"></div><div id="impact" class="impact"></div>
         <details><summary>Inspect route table differences</summary><div id="route-diff"></div></details>
         <div id="deployment-result" role="status" aria-live="polite"></div><div class="decision-buttons"><button id="reject" class="secondary">Reject change</button><button id="approve" class="primary">Approve & deploy →</button></div><p id="approval-hint" class="field-hint"></p>
@@ -67,6 +77,14 @@
     </div>
     <div class="dashboard-column secondary-column">
     <section class="card intent-card" id="intent"><div class="card-heading"><div><p class="eyebrow">02 / OPERATOR INTENT</p><h2>What should change?</h2></div></div>
+      <div class="nl-ingress-box" style="margin-bottom:1rem;padding:0.75rem;background:#f0f6f3;border-radius:8px;border:1px dashed #087f71;">
+        <label for="nl-input" style="font-size:0.8rem;font-weight:700;color:#087f71;display:block;margin-bottom:4px;">✨ NATURAL LANGUAGE CO-PILOT</label>
+        <div style="display:flex;gap:6px;">
+          <input id="nl-input" type="text" placeholder="e.g. Connect R1 to engineering 10.20.0.0/24 via 10.0.1.2" style="flex:1;font-size:0.84rem;padding:6px 8px;border:1px solid #ccc;border-radius:4px;">
+          <button id="nl-submit-btn" type="button" style="background:#087f71;color:#fff;border:none;border-radius:4px;padding:6px 10px;font-size:0.82rem;font-weight:600;cursor:pointer;">Parse ↗</button>
+        </div>
+        <p id="nl-hint" class="field-hint" style="margin:4px 0 0;font-size:0.75rem;">Guarded ingress: translates human language into strict YANG/JSON intent.</p>
+      </div>
       <form id="intent-form"><label for="intent-type">Action</label><select id="intent-type" name="intent_type"><option value="add_static_route">Add a static route</option><option value="remove_static_route">Remove a managed route</option></select>
         <div class="form-row"><div><label for="source">Source router</label><select id="source" name="source"><option>R1</option><option>R2</option><option>R3</option></select></div><div><label for="destination">Destination network</label><input id="destination" name="destination" value="10.20.0.0/24" required></div></div>
         <div id="hop-field"><label for="next-hop">Next hop</label><input id="next-hop" name="next_hop" value="10.0.1.2" required><p class="field-hint">Use the interface address of a directly connected neighbor.</p></div>

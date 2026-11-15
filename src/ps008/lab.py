@@ -218,6 +218,7 @@ class DigitalTwin:
         elif existing[0].owner != candidate.router:
             errors.append("Route is not managed by the source router")
         impact = {}
+        traces = []
         if self.modeled and candidate.router in self.routers:
             proposed = self.clone()
             proposed.apply(candidate)
@@ -242,4 +243,68 @@ class DigitalTwin:
         ]
         checks = [{"name": name, "passed": not any(any(word in e for word in words) for e in errors),
                    "detail": detail} for name, words, detail in groups]
-        return ValidationResult(not errors, errors, warnings, affected, checks, impact)
+
+        # Invariant contracts (Batfish-style differential reachability & security)
+        invariants = []
+        core_reachable = True
+        if self.modeled:
+            core_trace = proposed.trace("R1", "10.30.0.1") if candidate.router in self.routers else self.trace("R1", "10.30.0.1")
+            core_reachable = (core_trace["outcome"] == "reached")
+        invariants.append({
+            "id": "INV-01",
+            "name": "Core Backbone Reachability",
+            "status": "PASSED" if core_reachable else "FAILED",
+            "detail": "Core management & transit backbone (10.30.0.0/24) remains reachable."
+        })
+
+        transit_violation = False
+        target_net = ipaddress.IPv4Network(network, strict=False)
+        for t_net in ("10.0.1.0/24", "10.0.2.0/24"):
+            if target_net == ipaddress.IPv4Network(t_net):
+                transit_violation = True
+        invariants.append({
+            "id": "INV-02",
+            "name": "Transit Network Integrity",
+            "status": "FAILED" if transit_violation else "PASSED",
+            "detail": "Transit subnets remain isolated from customer route shadowing."
+        })
+
+        fwd_consistent = not any(x["after"]["outcome"] == "loop" for x in traces) if traces else True
+        invariants.append({
+            "id": "INV-03",
+            "name": "Forwarding Class Consistency",
+            "status": "PASSED" if fwd_consistent else "FAILED",
+            "detail": "Prefix intervals evaluate consistently without divergence or black holes."
+        })
+
+        # Blast radius & risk scoring (Forward Networks-style)
+        address_count = target_net.num_addresses
+        path_routers = []
+        if traces:
+            sample = traces[0]["after"]
+            path_routers = sample.get("path", [])
+
+        if errors:
+            risk_level = "CRITICAL"
+            risk_score = 95
+            risk_summary = f"High-risk change blocked: {'; '.join(errors)}"
+        elif warnings:
+            risk_level = "MEDIUM"
+            risk_score = 45
+            risk_summary = f"Operational review required: {'; '.join(warnings)}"
+        else:
+            risk_level = "LOW"
+            risk_score = 10
+            risk_summary = f"Low risk: {address_count} host addresses along {' -> '.join(path_routers) if path_routers else candidate.router}."
+
+        blast_radius = {
+            "affected_prefix": network,
+            "address_count": address_count,
+            "path_routers": path_routers,
+            "transit_hop_count": max(0, len(path_routers) - 2),
+            "risk_level": risk_level,
+            "risk_score": risk_score,
+            "summary": risk_summary,
+        }
+
+        return ValidationResult(not errors, errors, warnings, affected, checks, impact, invariants, blast_radius)

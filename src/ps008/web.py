@@ -205,6 +205,14 @@ def create_app(state_file=".ps008/state.json", gns3_inventory=None, *, console=N
     def audit(request: Request):
         return {"events": service(request).audit()}
 
+    @app.post("/api/ingress/natural")
+    def natural_ingress(data: dict):
+        from .ingress import parse_natural_intent
+        from dataclasses import asdict
+        text = data.get("text", "")
+        req = parse_natural_intent(text)
+        return asdict(req)
+
     @app.post("/api/reviews")
     def prepare(request: Request, data: dict):
         return review_backend(request).prepare(data)
