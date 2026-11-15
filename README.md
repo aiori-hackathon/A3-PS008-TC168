@@ -1,6 +1,6 @@
 # PS-008 Network Management Agent
 
-The customer-facing project site is branded **NexaRoute**. It includes a product overview, workflow guide, learning videos, local setup commands, and GNS3 walkthrough. To publish it, import this repository in Vercel, choose **Other** as the framework, keep the repository root as the project root, and deploy. `vercel.json` publishes the static site from `site/`. The interactive Python dashboard runs locally from a clone and connects to the user's own GNS3 controller and lab.
+The customer-facing project site is branded **NetKavach**. It includes a product overview, workflow guide, learning videos, local setup commands, and GNS3 walkthrough. To publish it, import this repository in Vercel, choose **Other** as the framework, keep the repository root as the project root, and deploy. `vercel.json` publishes the static site from `site/`. The interactive Python dashboard runs locally from a clone and connects to the user's own GNS3 controller and lab.
 
 **AIORI-3 hackathon project | Track: PS-008 | Submission repository: A3-PS008-TC168**
 

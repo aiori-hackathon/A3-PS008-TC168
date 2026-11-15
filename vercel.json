@@ -1,5 +1,5 @@
 {
-  "buildCommand": "echo Preparing NexaRoute static site",
+  "buildCommand": "echo Preparing NetKavach static site",
   "cleanUrls": true,
   "trailingSlash": false,
   "outputDirectory": "site"
