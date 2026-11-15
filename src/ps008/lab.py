@@ -248,7 +248,7 @@ class DigitalTwin:
         invariants = []
         core_reachable = True
         if self.modeled:
-            core_trace = proposed.trace("R1", "10.30.0.1") if candidate.router in self.routers else self.trace("R1", "10.30.0.1")
+            core_trace = proposed.trace("R2", "10.30.0.1") if candidate.router in self.routers else self.trace("R2", "10.30.0.1")
             core_reachable = (core_trace["outcome"] == "reached")
         invariants.append({
             "id": "INV-01",
