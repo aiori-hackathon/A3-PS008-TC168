@@ -64,6 +64,37 @@
   margin-inline: auto;
 }
 
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.dashboard-column {
+  display: contents;
+}
+
+.topology-card { order: 1; }
+.intent-card { order: 2; }
+.review-card { order: 3; }
+.routes-card { order: 4; }
+.audit-card { order: 5; }
+
+.brand {
+  font-size: 0;
+  letter-spacing: 0;
+}
+
+.brand::after {
+  content: "NetKavach";
+  font-size: 17px;
+  letter-spacing: -.4px;
+}
+
+.brand .tag {
+  display: none;
+}
+
 body[data-view="control"] .routes-card,
 body[data-view="control"] .audit-card {
   display: none;
