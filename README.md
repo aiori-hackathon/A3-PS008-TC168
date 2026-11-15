@@ -1,5 +1,7 @@
 # PS-008 Network Management Agent
 
+The customer-facing project site is branded **NexaRoute**. It includes a product overview, workflow guide, learning videos, local setup commands, and GNS3 walkthrough. Deploy the repository root to Vercel; `vercel.json` publishes the static site from `site/`. The interactive Python dashboard runs locally from a clone and connects to the user's own GNS3 controller and lab.
+
 **AIORI-3 hackathon project | Track: PS-008 | Submission repository: A3-PS008-TC168**
 
 An explainable, approval-gated assistant for IPv4 static-route changes. Operators can inspect predicted forwarding paths, review the exact proposed command, and retain control of the deployment decision. The project combines a deterministic three-router software twin, a local dashboard, live GNS3/OpenWrt lab observation, and a Cisco IOS device adapter.
