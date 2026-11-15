@@ -1,0 +1,34 @@
+{
+  "origin": "gns3-openwrt-console-observed",
+  "project": "AIORI-PS008-Three-Router-Lab",
+  "project_id": "768343e9-a388-4110-a6d6-8b8f40bd4e48",
+  "checked_at": "2026-11-15T09:12:56.976509+00:00",
+  "routers": {
+    "R1": {
+      "status": "started",
+      "node_id": "cfb90140-31bc-423d-bfae-de88697d1fa3",
+      "interfaces": "ip -4 address show; echo __PS008_DONE_3bb56620269b__\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.1/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\n__PS008_DONE_3bb56620269b__\r\nroot@OpenWrt:~#",
+      "routes": "ip -4 route show; echo __PS008_DONE_b7a0dd7c34fb__\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.1 \r\n10.0.2.0/24 via 10.0.1.2 dev eth1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\n__PS008_DONE_b7a0dd7c34fb__\r\nroot@OpenWrt:~#",
+      "ping": "ping -c 4 -W 2 10.0.2.2; echo __PS008_DONE_14f67e61b8ef__\r\nPING 10.0.2.2 (10.0.2.2): 56 data bytes\r\n64 bytes from 10.0.2.2: seq=0 ttl=63 time=10.102 ms\r\n64 bytes from 10.0.2.2: seq=1 ttl=63 time=12.186 ms\r\n64 bytes from 10.0.2.2: seq=2 ttl=63 time=4.643 ms\r\n64 bytes from 10.0.2.2: seq=3 ttl=63 time=4.004 ms\r\n\r\n--- 10.0.2.2 ping statistics ---\r\n4 packets transmitted, 4 packets received, 0% packet loss\r\nround-trip min/avg/max = 4.004/7.733/12.186 ms\r\n__PS008_DONE_14f67e61b8ef__\r\nroot@OpenWrt:~#",
+      "ping_replies": {
+        "sent": 4,
+        "received": 4
+      }
+    },
+    "R2": {
+      "status": "started",
+      "node_id": "4ef96937-8653-45eb-8a4f-a8f33222645d",
+      "interfaces": "ip -4 address show; echo __PS008_DONE_a84a8399c8ed__\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.1.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.1/24 scope global eth2\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\n__PS008_DONE_a84a8399c8ed__\r\nroot@OpenWrt:~#",
+      "routes": "ip -4 route show; echo __PS008_DONE_135b3c28c4ab__\r\n10.0.1.0/24 dev eth1 scope link  src 10.0.1.2 \r\n10.0.2.0/24 dev eth2 scope link  src 10.0.2.1 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\n__PS008_DONE_135b3c28c4ab__\r\nroot@OpenWrt:~#"
+    },
+    "R3": {
+      "status": "started",
+      "node_id": "b5f33a07-c6f7-41e2-8d55-52e232a4ba49",
+      "interfaces": "ip -4 address show; echo __PS008_DONE_58d8c93308fb__\r\n1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000\r\n    inet 127.0.0.1/8 scope host lo\r\n       valid_lft forever preferred_lft forever\r\n3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP qlen 1000\r\n    inet 10.0.2.2/24 scope global eth1\r\n       valid_lft forever preferred_lft forever\r\n6: br-lan: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN qlen 1000\r\n    inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan\r\n       valid_lft forever preferred_lft forever\r\n__PS008_DONE_58d8c93308fb__\r\nroot@OpenWrt:~#",
+      "routes": "ip -4 route show; echo __PS008_DONE_fd2b3b2ce6e6__\r\n10.0.1.0/24 via 10.0.2.1 dev eth1 \r\n10.0.2.0/24 dev eth1 scope link  src 10.0.2.2 \r\n192.168.1.0/24 dev br-lan scope link  src 192.168.1.1 \r\n__PS008_DONE_fd2b3b2ce6e6__\r\nroot@OpenWrt:~#"
+    }
+  },
+  "ping_requested": true,
+  "route_write_performed": false,
+  "sha256": "1208f7f17ebe0ca2b909edbdca2cc76eba5ddbc0252cb88f0645fe773e43f525"
+}

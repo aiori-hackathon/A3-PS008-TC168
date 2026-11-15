@@ -24,7 +24,7 @@ def check_routing_layout(page, url, screenshots):
         page.goto(url)
         expect(page.locator("#revision")).to_have_text("0")
         expect(page.locator("#workspace")).to_be_enabled()
-        if width > 900:
+        if width >= 1024:
             gap = page.evaluate("""() => {
                 const form = document.querySelector('.intent-card').getBoundingClientRect();
                 const routes = document.querySelector('.routes-card').getBoundingClientRect();
@@ -41,13 +41,11 @@ def check_routing_layout(page, url, screenshots):
             }"""), f"Intent form overlaps routing card at {width}x{height}, scroll {fraction}"
         panel = page.get_by_role("region", name="Routing tables.", exact=True)
         panel.scroll_into_view_if_needed()
-        assert panel.evaluate("el => el.scrollHeight > el.clientHeight"), "Routing panel has no vertical scroll area"
-        panel.focus()
-        panel.press("End")
-        page.wait_for_function("() => document.getElementById('route-tables').scrollTop > 0")
-        expect(panel.locator("tbody tr").last).to_be_in_viewport()
-        panel.press("Home")
-        page.wait_for_function("() => document.getElementById('route-tables').scrollTop === 0")
+        assert panel.evaluate("el => el.scrollHeight <= el.clientHeight + 1"), "Routing panel should grow with the page"
+        page.locator('[data-router="R2"]').click()
+        expect(panel.locator(".router-table")).to_have_count(1)
+        page.locator('[data-router="All"]').click()
+        expect(panel.locator(".router-table")).to_have_count(3)
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), "Routing layout overflows the page"
         if screenshots and width == 1820:
             page.screenshot(path=str(ROOT / "docs" / "images" / "routing-scroll.png"))
@@ -91,12 +89,35 @@ def main():
                 page.goto(url)
                 expect(page.locator("#revision")).to_have_text("0")
                 check_routing_layout(page, url, args.screenshots)
+                page.locator("#node-R2").click()
+                expect(page.locator("#source")).to_have_value("R2")
+                expect(page.locator("#route-tables .router-table")).to_have_count(1)
+                page.locator('[data-view="routes"]').click()
+                expect(page.locator(".routes-card")).to_be_visible()
+                page.locator('[data-view="audit"]').click()
+                expect(page.locator(".audit-card")).to_be_visible()
+                page.locator("#quick-action").click()
+                expect(page.locator("#trace-address")).to_be_focused()
+                page.locator('.nav-link[data-view="control"]').click()
+                page.locator("#nav-toggle").click()
+                assert page.evaluate("document.body.classList.contains('nav-collapsed')")
+                page.locator("#nav-toggle").click()
+                page.set_viewport_size({"width":390,"height":844})
+                page.locator("#nav-toggle").click()
+                assert page.evaluate("document.body.classList.contains('nav-open')")
+                page.locator("#nav-overlay").click(position={"x":350,"y":100})
+                assert not page.evaluate("document.body.classList.contains('nav-open')")
+                page.set_viewport_size({"width":1440,"height":1100})
+                page.goto(url)
                 # Keyboard users can move directly to the intent form.
                 page.keyboard.press("Tab")
                 expect(page.locator(".skip-link")).to_be_focused()
                 page.keyboard.press("Enter")
                 page.get_by_role("button", name="Generate & validate").click()
                 expect(page.locator("#review-status")).to_have_text("pending")
+                expect(page.locator("#pending-count")).to_be_visible()
+                expect(page.locator(".route-highlight")).to_have_count(1)
+                expect(page.locator(".workflow .complete")).to_have_count(2)
                 expect(page.locator("#commands")).to_contain_text("ip route 10.20.0.0 255.255.255.0 10.0.1.2")
                 expect(page.locator("#approve")).to_be_enabled()
                 page.reload()
@@ -161,7 +182,7 @@ def main():
                     page.screenshot(path=str(images / "mobile.png"), full_page=True)
                 assert not errors, errors
                 browser.close()
-            result = {"at":datetime.now(timezone.utc).isoformat(), "browser":"Chromium", "flows":["preview","review_reopen","approval","rejection","conflict","loop", "rollback", "verification_failure", "removal", "workspace_isolation", "reload", "keyboard_skip", "mobile_approval"], "layout_checks":{"viewports":["1820x900","1440x900","1280x720","1024x768","390x844"], "intent_route_overlap":False,"keyboard_route_scroll":"passed"}, "console_errors":errors, "result":"passed"}
+            result = {"at":datetime.now(timezone.utc).isoformat(), "browser":"Chromium", "flows":["preview","review_reopen","approval","rejection","conflict","loop", "rollback", "verification_failure", "removal", "workspace_isolation", "reload", "keyboard_skip", "mobile_approval", "router_selection", "focused_navigation", "sidebar_drawer"], "layout_checks":{"viewports":["1820x900","1440x900","1280x720","1024x768","390x844"], "intent_route_overlap":False,"routing_tabs":"passed"}, "console_errors":errors, "result":"passed"}
         finally:
             if os.name == "nt" and process.poll() is None:
                 # Windows venv launchers may own a second Python process.

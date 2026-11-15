@@ -1,0 +1,6 @@
+{
+  "buildCommand": "echo Preparing NetKavach static site",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "outputDirectory": "site"
+}

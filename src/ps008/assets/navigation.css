@@ -1,0 +1,148 @@
+[hidden] {
+  display: none !important;
+}
+
+.app-shell {
+  display: block;
+  min-height: 0;
+}
+
+#sidebar.sidebar {
+  position: sticky;
+  top: 70px;
+  z-index: 35;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: auto;
+  min-height: 58px;
+  padding: 7px max(22px, calc((100vw - 1440px) / 2));
+  overflow-x: auto;
+  background: #fff;
+  border-right: 0;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 3px 10px #183e3008;
+}
+
+#sidebar .nav-title {
+  display: none;
+}
+
+#sidebar .nav-link {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 10px 13px;
+}
+
+#sidebar .nav-link:last-child {
+  margin-left: auto;
+}
+
+.nav-collapsed #sidebar.sidebar {
+  width: 100%;
+  flex-basis: auto;
+}
+
+.nav-collapsed #sidebar .nav-label {
+  display: inline;
+}
+
+.nav-collapsed #sidebar .nav-link {
+  justify-content: flex-start;
+  padding: 10px 13px;
+}
+
+#nav-toggle,
+#nav-overlay {
+  display: none !important;
+}
+
+.app-shell main {
+  width: min(100%, 1504px);
+  margin-inline: auto;
+}
+
+body[data-view="control"] .routes-card,
+body[data-view="control"] .audit-card {
+  display: none;
+}
+
+.evidence-nav {
+  position: sticky;
+  top: 70px;
+  z-index: 35;
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 8px max(22px, calc((100vw - 1440px) / 2));
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 3px 10px #183e3008;
+}
+
+.evidence-nav button {
+  flex: 0 0 auto;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.evidence-nav button:hover,
+.evidence-nav button:focus-visible,
+.evidence-nav button.active {
+  background: var(--mint);
+  color: var(--deep);
+}
+
+.evidence-panel {
+  width: min(100%, 1440px);
+  margin: 0 auto 22px;
+}
+
+.gns-grid {
+  display: block;
+}
+
+.evidence-nav button:focus-visible,
+#sidebar .nav-link:focus-visible {
+  outline: 3px solid #04785766;
+  outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+  #sidebar.sidebar {
+    top: 70px;
+    padding-inline: 4%;
+  }
+
+  #sidebar .nav-link {
+    padding: 9px 11px;
+  }
+
+  #sidebar .nav-link:last-child {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  #sidebar.sidebar {
+    top: 120px;
+  }
+
+  .evidence-nav {
+    top: 120px;
+    padding: 7px 4%;
+  }
+
+  .evidence-nav button {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+}

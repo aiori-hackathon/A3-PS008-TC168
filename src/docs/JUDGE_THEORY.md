@@ -81,7 +81,7 @@ Within its declared scope, the design is strong because it has all three safety 
 - **At execution:** current-revision and fingerprint checks, locking, command allowlisting, and a fresh revalidation.
 - **After execution:** postcondition verification, atomic persistence, audit evidence, and rollback/recovery.
 
-The current automated evidence is 84 passing pytest tests covering core logic, review races, persistence, API security, demo isolation, and browser-facing behavior. Browser checks cover desktop and mobile flows, approval/rejection, invalid changes, rollback, verification failure, reload, keyboard access, and workspace isolation.
+The latest committed JUnit report records 127 passing pytest tests covering core logic, review races, persistence, API security, demo isolation, and mocked GNS3 workflows. Browser checks cover desktop and mobile flows, approval/rejection, invalid changes, rollback, verification failure, reload, keyboard access, and workspace isolation.
 
 ## 9. Likely judge questions and strong answers
 
@@ -115,7 +115,27 @@ Removal can be an intentional change that loses reachability. The system makes t
 
 ### Is this connected to real routers?
 
-The simulator is a local software twin and does not emulate IOS. The separate GNS3 adapter can connect to configured IOS-compatible devices over verified-host-key SSH, but the current repository milestone has only fake/offline validation because no real lab was available. Do not claim device-observed success until the dashboard shows actual router read-back and configured probe evidence. It is not a production controller or tamper-proof compliance system.
+The simulator is a local software twin and does not emulate IOS. The separate GNS3 adapter can connect to configured IOS-compatible devices over verified-host-key SSH; its approval and route-write logic is covered by offline tests. The current three-router OpenWrt GNS3 lab supplies live console route snapshots and packet probes through a separate read-only panel. We distinguish that observation from an IOS adapter deployment. A successful live IOS write requires route read-back and a configured endpoint probe.
+
+### Why use both a software twin and GNS3?
+
+The twin is repeatable and fast enough to explore conflicts, loops, rejected approvals, and failure recovery. GNS3 supplies real router processes, links, console output, and packet captures. The two evidence types answer different questions: predicted impact versus observed lab behavior.
+
+### Why did the OpenWrt ping fail in an earlier capture?
+
+An active link only proves that a virtual interface is connected. End-to-end ICMP also requires matching interface addresses, a forward route, R2 forwarding permission, and a return route. The preparation script restores those runtime settings and refuses to report a successful demo unless its fresh four-packet ping succeeds. Earlier failed captures remain valid diagnostic evidence.
+
+### What exactly is live-updated on the dashboard?
+
+The OpenWrt panel samples console-reported IPv4 addresses and routes from R1, R2, and R3. An operator can request a four-packet ping and turn on minute-by-minute snapshot refresh. Captures include timestamps and are kept in a local history for export. This is observation and probing, not autonomous OpenWrt route deployment.
+
+### How do you know the packets really traversed GNS3?
+
+The ping count is the source router's report. GNS3 link captures provide independent packet-level evidence in Wireshark. Compare ICMP Echo requests and replies on R1–R2 and R2–R3; a reply at R1 plus matching link traffic supports the end-to-end claim.
+
+### What does a checksum prove?
+
+The exported snapshot's SHA-256 identifies its exact content and detects accidental changes to a saved copy. It is not a digital signature or an independent attestation of router truth.
 
 ### What are the main limitations?
 

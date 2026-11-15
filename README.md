@@ -1,12 +1,32 @@
 # PS-008 Network Management Agent
 
+The customer-facing site, **[NetKavach](https://netkavach.vercel.app/)**, includes a product overview, workflow guide, learning videos, local setup commands, and a GNS3 walkthrough. Vercel serves the static site from `site/`. The interactive Python dashboard runs locally from a clone and connects to the user's own GNS3 controller and lab.
+
 **AIORI-3 hackathon project | Track: PS-008 | Submission repository: A3-PS008-TC168**
 
-An explainable, approval-gated assistant for planning and reviewing IPv4 static-route changes. Operators can inspect the predicted forwarding impact, review the exact proposed action, and retain control over approval. The project combines a deterministic three-router software twin with a GNS3/Cisco IOS adapter and a local dashboard.
+An explainable, approval-gated assistant for IPv4 static-route changes. Operators can inspect predicted forwarding paths, review the exact proposed command, and retain control of the deployment decision. The project combines a deterministic three-router software twin, a local dashboard, live GNS3/OpenWrt lab observation, and a Cisco IOS device adapter.
 
-## Team Demonstration Video
+## Product architecture
 
-[Watch the PS-008 project video on YouTube](https://youtu.be/tZcXjvHfEpg?si=Nb0RlGkdUhJWbuEH)
+The product architecture is designed to evolve toward a professional component-based frontend while preserving the existing Python application and live-lab workflow:
+
+```text
+React + TypeScript + Vite
+        ↓
+Tailwind CSS + Framer Motion
+        ↓
+FastAPI backend APIs
+        ↓
+GNS3 adapter and network lab
+```
+
+The current customer-facing site remains a lightweight static implementation in `site/`, hosted on Vercel. The architecture above defines the planned frontend layer for reusable dashboard components, typed API integration, responsive styling, and motion design; it does not change the current working implementation.
+
+## Project demonstrations
+
+- [Project understanding and Proposed solution](https://youtu.be/tZcXjvHfEpg?si=Nb0RlGkdUhJWbuEH) — team introduction, problem understanding, and proposed approach.
+- [Prototype demonstration link](https://drive.google.com/drive/folders/1gVgXb2LjOvwtVQpNY_jxOXl32ayPishS?usp=drive_link) — prototype recordings and supporting demonstration material.
+
 ## AIORI-3 Abstract
 
 ### Problem description
@@ -43,7 +63,8 @@ The project brings these concepts into an operator-centered workflow: structured
 The application provides two complementary ways to explore network changes:
 
 1. **Software twin:** a deterministic R1-R2-R3 model drives the dashboard demo. It checks route proposals against modeled forwarding and supports repeatable scenarios without router images.
-2. **GNS3/Cisco IOS adapter:** implements controller and device evidence capture, a restricted IOS route parser, modeled impact previews, approved static-route commands, state revalidation, route read-back, configured probes for additions, operation journaling, and scoped recovery outcomes.
+2. **Live OpenWrt evidence panel:** reads interfaces and IPv4 routes from the three-router GNS3 lab, runs a four-packet R1-to-R3 ping on request, and keeps timestamped captures for export.
+3. **Cisco IOS adapter:** implements controller and device evidence capture, a restricted IOS route parser, modeled impact previews, approved static-route commands, state revalidation, route read-back, configured probes for additions, operation journaling, and scoped recovery outcomes.
 
 The supported intents are `add_static_route` and `remove_static_route`. Route removal is limited to routes added and verified by the application. The adapter uses command allowlisting and verified SSH host keys. The dashboard presents modeled predictions separately from captured device evidence.
 
@@ -86,14 +107,16 @@ flowchart LR
 
 ## AIORI-3 Implemented Features and Evidence
 
-- **127 automated tests pass**, covering simulator behavior and mocked GNS3 controller/device workflows.
+- Automated tests cover the simulator, review lifecycle, and mocked GNS3 controller/device workflows; the commands below reproduce the current test result.
 - The local dashboard supports repeatable judge-demo scenarios, route preview, approval/rejection, audit review, and evidence export.
+- The dashboard includes a collapsible navigation rail, state-aware workflow steps, router-linked source selection, filtered routing tables, audit search, and a mobile drawer.
 - The software twin models a three-router topology and checks forwarding impact across relevant prefix ranges.
 - The GNS3 controller was discovered through the dashboard on the development laptop.
 - Two VPCS endpoints in an isolated GNS3 smoke lab exchanged ping replies across their virtual link.
+- A three-router OpenWrt GNS3 project provides live console observation, on-demand ping tests, minute-by-minute dashboard refresh, timestamped capture history, and JSON evidence export. The prepared R1-to-R3 path received 4/4 ping replies, with matching ICMP traffic on both GNS3 links.
 - The IOS adapter implements a restricted, approval-gated IPv4 static-route workflow with state checks, read-back, configured probes, and conservative recovery states.
 
-The automated test result, controller observation, and VPCS connectivity check are distinct evidence types and are labeled accordingly in the project documentation.
+The automated tests, software-twin workflow, live OpenWrt console observation, and packet captures are distinct evidence types and are labeled accordingly in the project documentation.
 
 ## AIORI-3 Deployment Timeline
 
@@ -103,6 +126,7 @@ The automated test result, controller observation, and VPCS connectivity check a
 | Review lifecycle, approval/rejection, audit, and simulator recovery | Implemented and tested |
 | GNS3 controller discovery | Observed locally through the dashboard |
 | GNS3 VPCS link connectivity | Demonstrated with live ping replies |
+| Three-router OpenWrt lab observation | Three live routers, dashboard capture, 4/4 routed ping, and two-link packet evidence |
 | IOS-compatible route operations | Adapter workflow implemented; live-lab validation is a future milestone |
 
 ## Future Scope
@@ -113,6 +137,16 @@ The automated test result, controller observation, and VPCS connectivity check a
 - Expand supported device platforms and route formats through independently tested adapters.
 - Strengthen operation evidence with durable, tamper-evident audit storage and broader operational testing.
 
+
+## Evidence and reproducibility
+
+- **Automated tests:** [JUnit XML report](src/output/test-results.xml) from a fresh run: 127 passed, 0 failed (1 dependency deprecation warning). Use the Pytest command below to reproduce it.
+- **Three-router GNS3 lab:** [topology screenshot](src/docs/evidence/gns3-three-router-topology.png) and [repeatable setup helper](src/tools/setup_three_router_gns3_lab.py) show how R1, R2, and R3 were created and started.
+- **Live router evidence:** the [successful timestamped console result](src/docs/evidence/openwrt-routed-ping-success.json) records R1, R2, and R3 addresses and routes plus 4/4 R1-to-R3 ping replies. The [dashboard capture history](src/docs/evidence/openwrt-lab-captures.json) also retains earlier diagnostic runs.
+- **Packet evidence:** open the successful [R1–R2](src/docs/evidence/R1-R2-routed-success.pcap) and [R2–R3](src/docs/evidence/R2-R3-routed-success.pcap) captures in Wireshark and filter `icmp`. Each link contains four Echo requests and four Echo replies from a four-packet R1-to-R3 run. The separate [VPCS smoke-lab report](src/docs/evidence/gns3-smoke-evidence.json) records five replies across a direct link.
+- **Agent workflow:** [dashboard](src/docs/images/dashboard.png), [review screen](src/docs/images/review.png), and [judge walkthrough](src/docs/DEMO.md) document the software-twin proposal, modeled paths, human decision, and result. Mocked device tests cover the IOS adapter; live IOS deployment validation remains in future scope.
+
+Each link identifies what was observed or tested. The artifacts distinguish software-twin results, mocked adapter behavior, controller observations, and live OpenWrt console/packet evidence.
 
 ## Run and Test
 
@@ -150,6 +184,8 @@ intent file through the normal workflow:
 ```
 
 For GNS3 lab setup and the supported workflow, see [`src/docs/GNS3_SETUP.md`](src/docs/GNS3_SETUP.md). The judge walkthrough is in [`src/docs/DEMO.md`](src/docs/DEMO.md), and security boundaries are documented in [`src/docs/SECURITY.md`](src/docs/SECURITY.md).
+
+On the prepared development laptop, run `python tools/setup_three_router_gns3_lab.py` and `python tools/prepare_openwrt_demo.py` from `src` to start and configure the isolated OpenWrt lab. Open `/gns3` for live router snapshots and ping. Run `python tools/record_gns3_packet_demo.py` to capture both GNS3 links during a fresh probe. These OpenWrt observations are separate from the IOS approval-gated device adapter.
 
 ## Bibliography
 

@@ -1,0 +1,23 @@
+{
+  "checked_at": "2026-10-13T13:52:56.991886+00:00",
+  "source": "controller-and-VPCS-observed",
+  "controller_version": "2.2.61",
+  "project_name": "AIORI-PS008-Connectivity-Smoke",
+  "project_id": "5d883f18-2978-4074-ad73-619457812b79",
+  "nodes": {
+    "PC-OPS": {
+      "node_id": "7ff45084-d275-404e-bd27-1c12c537bb1b",
+      "status": "started",
+      "ip": "10.99.0.10"
+    },
+    "PC-ENG": {
+      "node_id": "a4ca6d01-2ad0-42b9-8253-60ac680fe27d",
+      "status": "started",
+      "ip": "10.99.0.11"
+    }
+  },
+  "link_present": true,
+  "ping_replies": 5,
+  "ping_passed": true,
+  "limitation": "VPCS connectivity checks the GNS3 controller and data link, not IOS route deployment"
+}

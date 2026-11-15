@@ -1,0 +1,35 @@
+{
+  "at": "2026-11-15T09:47:35.503149+00:00",
+  "browser": "Chromium",
+  "flows": [
+    "preview",
+    "review_reopen",
+    "approval",
+    "rejection",
+    "conflict",
+    "loop",
+    "rollback",
+    "verification_failure",
+    "removal",
+    "workspace_isolation",
+    "reload",
+    "keyboard_skip",
+    "mobile_approval",
+    "router_selection",
+    "focused_navigation",
+    "sidebar_drawer"
+  ],
+  "layout_checks": {
+    "viewports": [
+      "1820x900",
+      "1440x900",
+      "1280x720",
+      "1024x768",
+      "390x844"
+    ],
+    "intent_route_overlap": false,
+    "routing_tabs": "passed"
+  },
+  "console_errors": [],
+  "result": "passed"
+}

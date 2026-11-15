@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PS-008 | Network Control</title><link rel="icon" type="image/svg+xml" href="/static/favicon.svg"><link rel="stylesheet" href="/static/style.css">
+  <title>PS-008 | Network Control</title><link rel="icon" type="image/svg+xml" href="/static/favicon.svg"><link rel="stylesheet" href="/static/style.css"><link rel="stylesheet" href="/static/navigation.css">
   <script src="/static/app.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#intent">Skip to intent form</a>
-<header class="topbar"><a href="/" class="brand"><span class="brand-icon">↗</span> NETWORK CONTROL <span class="tag">PS-008</span></a>
-  <div class="top-actions"><span class="local"><i></i> LOCAL SIMULATION</span><label class="sr-only" for="workspace">Workspace</label><select id="workspace"><option value="lab">Persistent lab</option><option value="demo">Judge demo</option></select></div>
+<header class="topbar"><div class="header-left"><button id="nav-toggle" class="icon-button" type="button" aria-label="Toggle navigation" aria-expanded="true">☰</button><a href="/" class="brand"><span class="brand-icon">↗</span> NETWORK CONTROL <span class="tag">PS-008</span></a><span id="active-view" class="active-view">Control Center</span></div>
+  <div class="top-actions"><span class="local"><i></i> LOCAL SIMULATION</span><label class="sr-only" for="workspace">Workspace</label><select id="workspace"><option value="lab">Persistent lab</option><option value="demo">Judge demo</option></select><button id="revision-trigger" class="revision-pill" type="button" aria-label="Lab revision and audit history"><span>LAB REVISION</span><strong id="revision">—</strong></button><button id="quick-action" class="quick-action" type="button" aria-label="Quick action and trace">⌘K</button></div>
 </header>
-<main>
+<div id="nav-overlay" class="nav-overlay" hidden></div><div class="app-shell"><nav id="sidebar" class="sidebar" aria-label="Main navigation"><div class="nav-title">WORKSPACE</div><button class="nav-link active" type="button" data-view="control"><span class="nav-icon">◫</span><span class="nav-label">Control Center</span></button><button class="nav-link" type="button" data-view="review"><span class="nav-icon">✓</span><span class="nav-label">Change Review</span><span id="pending-count" class="pending-count" hidden>1</span></button><button class="nav-link" type="button" data-view="routes"><span class="nav-icon">≋</span><span class="nav-label">Routing Tables</span></button><button class="nav-link" type="button" data-view="audit"><span class="nav-icon">◷</span><span class="nav-label">Audit Trail</span></button><a class="nav-link" href="/gns3"><span class="nav-icon">↗</span><span class="nav-label">GNS3 evidence</span></a></nav><main>
   <p><a href="/gns3">Open GNS3 evidence dashboard →</a></p>
-  <div class="page-heading"><div><p class="eyebrow">INTENT → EVIDENCE → APPROVAL</p><h1>A clearer view of every change.</h1><p class="subtitle">Plan a route. Inspect its impact. Stay in control.</p></div><div class="revision"><span>LAB REVISION</span><strong id="revision">—</strong></div></div>
+  <div class="page-heading"><div><p class="eyebrow">INTENT → EVIDENCE → APPROVAL</p><h1>A clearer view of every change.</h1><p class="subtitle">Plan a route. Inspect its impact. Stay in control.</p></div></div><div class="workflow" role="group" aria-label="Change workflow"><button type="button" data-step="intent"><b>1</b> Intent</button><button type="button" data-step="validation"><b>2</b> Validation</button><button type="button" data-step="approval"><b>3</b> Approval</button><button type="button" data-step="deployed"><b>4</b> Deployed</button></div>
   <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
   <section id="demo-panel" class="demo-panel" hidden aria-label="Demonstration scenarios"><div><strong>Judge demo</strong><span>Each scenario resets only this session’s demo lab. Approve or reject the review yourself.</span></div><div class="scenario-buttons"><button data-scenario="success">Add route</button><button data-scenario="remove">Remove route</button><button data-scenario="rejected">Rejection</button><button data-scenario="conflict">Conflict</button><button data-scenario="loop">Loop</button><button data-scenario="rollback">Rollback</button><button data-scenario="verification">Verification failure</button><button id="run-12-tests-btn" style="background:#087f71;color:#fff;font-weight:600;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;">⚡ Run 12 Mandatory Tests</button></div></section>
   <section id="tests-modal" class="card" hidden style="margin-bottom:1.5rem;border:2px solid #087f71;border-radius:12px;background:#fff;">
@@ -47,9 +47,9 @@
       <svg id="topology" viewBox="0 0 700 180" role="img" aria-label="R1 connects to R2 on 10.0.1.0/24. R2 connects to R3 on 10.0.2.0/24.">
         <path class="network-link" id="link-R1-R2" d="M145 72 H330"/><path class="network-link" id="link-R2-R3" d="M370 72 H555"/>
         <text x="235" y="52" class="svg-label">10.0.1.0/24</text><text x="465" y="52" class="svg-label">10.0.2.0/24</text>
-        <g class="router-node" id="node-R1"><rect x="85" y="40" width="90" height="66" rx="15"/><text x="130" y="80">R1</text><text x="130" y="133" class="svg-label">10.10.0.0/24</text><text x="130" y="153" class="svg-small">OPERATIONS</text></g>
-        <g class="router-node" id="node-R2"><rect x="305" y="40" width="90" height="66" rx="15"/><text x="350" y="80">R2</text><text x="350" y="133" class="svg-label">10.30.0.0/24</text><text x="350" y="153" class="svg-small">CORE</text></g>
-        <g class="router-node" id="node-R3"><rect x="525" y="40" width="90" height="66" rx="15"/><text x="570" y="80">R3</text><text x="570" y="133" class="svg-label">10.20.0.0/24</text><text x="570" y="153" class="svg-small">ENGINEERING</text></g>
+        <g class="router-node" id="node-R1" role="button" tabindex="0" aria-label="Select R1"><rect x="85" y="40" width="90" height="66" rx="15"/><text x="130" y="80">R1</text><text x="130" y="133" class="svg-label">10.10.0.0/24</text><text x="130" y="153" class="svg-small">OPERATIONS</text></g>
+        <g class="router-node" id="node-R2" role="button" tabindex="0" aria-label="Select R2"><rect x="305" y="40" width="90" height="66" rx="15"/><text x="350" y="80">R2</text><text x="350" y="133" class="svg-label">10.30.0.0/24</text><text x="350" y="153" class="svg-small">CORE</text></g>
+        <g class="router-node" id="node-R3" role="button" tabindex="0" aria-label="Select R3"><rect x="525" y="40" width="90" height="66" rx="15"/><text x="570" y="80">R3</text><text x="570" y="133" class="svg-label">10.20.0.0/24</text><text x="570" y="153" class="svg-small">ENGINEERING</text></g>
       </svg>
       <form id="trace-form" class="trace-form"><label for="trace-source">Trace from</label><select id="trace-source"><option>R1</option><option>R2</option><option>R3</option></select><label class="sr-only" for="trace-address">Destination IPv4 address</label><input id="trace-address" value="10.20.0.10" required placeholder="Destination IP"><button type="submit" class="secondary">Trace path ↗</button></form>
       <div id="trace-result" class="trace-result" aria-live="polite">Trace an address to inspect each forwarding decision.</div>
@@ -63,7 +63,7 @@
       </div>
     </section>
 
-    <section class="card audit-card"><div class="card-heading"><div><p class="eyebrow">05 / AUDIT TRAIL</p><h2>Every decision has a record.</h2></div><button id="export-audit" class="text-button">Export JSON ↓</button></div><ol id="audit" class="audit-list"></ol></section>
+    <section class="card audit-card"><div class="card-heading"><div><p class="eyebrow">05 / AUDIT TRAIL</p><h2>Every decision has a record.</h2></div><button id="export-audit" class="text-button">Export JSON ↓</button></div><label for="audit-filter">Filter decisions</label><input id="audit-filter" type="search" placeholder="Search action, message, or review ID"><ol id="audit" class="audit-list"></ol></section>
     </div>
     <div class="dashboard-column secondary-column">
     <section class="card intent-card" id="intent"><div class="card-heading"><div><p class="eyebrow">02 / OPERATOR INTENT</p><h2>What should change?</h2></div></div>
@@ -75,9 +75,9 @@
         <button type="submit" class="primary full">Generate & validate <span>→</span></button><p class="field-hint">Creates a preview. The lab changes only after approval.</p>
       </form>
     </section>
-    <section class="card routes-card"><div class="card-heading"><div><p class="eyebrow">04 / CURRENT STATE</p><h2 id="routing-tables-heading">Routing tables.</h2></div><button id="refresh" class="text-button">Refresh ↻</button></div><p id="routes-scroll-hint" class="field-hint routes-scroll-hint">Scroll inside this panel to view all three routers. Keyboard: focus the panel and use the arrow or Page Down keys.</p><div id="route-tables" role="region" aria-labelledby="routing-tables-heading" aria-describedby="routes-scroll-hint" tabindex="0"></div></section>
+    <section class="card routes-card"><div class="card-heading"><div><p class="eyebrow">04 / CURRENT STATE</p><h2 id="routing-tables-heading">Routing tables.</h2></div><button id="refresh" class="text-button">Refresh ↻</button></div><div id="router-filters" class="router-filters" role="group" aria-label="Filter routing tables"><button type="button" data-router="All" class="active">All</button><button type="button" data-router="R1">R1</button><button type="button" data-router="R2">R2</button><button type="button" data-router="R3">R3</button></div><div id="route-tables" role="region" aria-labelledby="routing-tables-heading" tabindex="0"></div></section>
     </div>
   </div>
   <footer><span>PS-008 · Reviewed network configuration</span><span>Software twin · Deterministic planning · Provisional intent pair</span></footer>
-</main>
+</main></div>
 </body></html>
