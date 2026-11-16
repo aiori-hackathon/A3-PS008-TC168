@@ -70,7 +70,7 @@ class DeploymentManager:
                     raise RuntimeError("Post-apply forwarding verification failed")
             self.twin.revision += 1
             self.twin.applied_request_ids.add(req.request_id)
-            result = DeploymentResult(True, "Deployment applied and verified successfully")
+            result = DeploymentResult(True, "Deployment applied and verified successfully", rolled_back=False, transaction_id=candidate.transaction_id)
             if on_result:
                 on_result(result)
             if self.store is not None:
@@ -87,7 +87,8 @@ class DeploymentManager:
                     self.twin.audit = recovered.audit
                 except Exception as rollback_error:
                     return DeploymentResult(False, f"Deployment failed: {exc}; persistent rollback failed: {rollback_error}")
-            result = DeploymentResult(False, f"Deployment failed: {exc}", rolled_back=journal_started or self.store is None)
+            is_rb = journal_started or self.store is None
+            result = DeploymentResult(False, f"Deployment failed: {exc}", rolled_back=is_rb, rollback_executed_commands=candidate.rollback_commands if is_rb else (), transaction_id=candidate.transaction_id)
             if on_result:
                 on_result(result)
                 if self.store is not None:

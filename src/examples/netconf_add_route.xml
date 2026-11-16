@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<nc:rpc xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:ps008="urn:aiori:hackathon:ps008:intent" message-id="1">
+  <ps008:submit-intent>
+    <ps008:network-intent>
+      <ps008:request-id>demo-add-001</ps008:request-id>
+      <ps008:intent-type>add-static-route</ps008:intent-type>
+      <ps008:source-router>R1</ps008:source-router>
+      <ps008:destination-prefix>10.20.0.0/24</ps008:destination-prefix>
+      <ps008:protocol>static</ps008:protocol>
+      <ps008:requested-change>Connect R1 to the engineering network</ps008:requested-change>
+      <ps008:next-hop>10.0.1.2</ps008:next-hop>
+    </ps008:network-intent>
+  </ps008:submit-intent>
+</nc:rpc>

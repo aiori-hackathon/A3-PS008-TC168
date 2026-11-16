@@ -90,6 +90,16 @@ def test_raw_commands_and_failure_fields_are_not_public_input(client):
     assert client.post("/api/reviews", json=request(failure="apply")).status_code == 422
 
 
+@pytest.mark.parametrize("content_length", ["invalid", "-1"])
+def test_invalid_content_length_is_rejected(client, content_length):
+    response = client.post(
+        "/api/reviews",
+        json=request(),
+        headers={"Content-Length": content_length},
+    )
+    assert response.status_code == 400
+
+
 def test_packaged_assets_and_security_headers(client):
     page = client.get("/")
     assert page.status_code == 200

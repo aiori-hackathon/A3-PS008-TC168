@@ -130,7 +130,8 @@ class ReviewService:
                 raise ReviewConflict("Lab changed since review; create a fresh review")
             request = parse_request(payload["request"])
             candidate = Candidate(request, payload["router"], tuple(payload["commands"]),
-                                  payload["change_summary"], payload["base_revision"])
+                                  payload["change_summary"], payload["base_revision"],
+                                  tuple(payload.get("rollback_commands", ())), payload.get("transaction_id", ""))
             validation = twin.validate(candidate)
             if not validation.valid:
                 review["status"] = "invalid"

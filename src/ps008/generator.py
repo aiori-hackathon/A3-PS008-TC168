@@ -1,3 +1,4 @@
+import hashlib
 import ipaddress
 from .schema import Candidate, IntentRequest
 
@@ -62,11 +63,26 @@ def generate_candidate(
     prefix = f"{network.network_address} {network.netmask}"
     if request.intent_type == "add_static_route":
         command = f"ip route {prefix} {request.next_hop}"
+        rollback_cmd = f"no ip route {prefix} {request.next_hop}"
         summary = f"Add static route {network} via {request.next_hop} on {request.source}"
     else:
         command = f"no ip route {prefix}" + (f" {remove_next_hop}" if remove_next_hop else "")
+        rollback_cmd = f"ip route {prefix} {remove_next_hop}" if remove_next_hop else ""
         summary = f"Remove managed static route {network} on {request.source}"
-    return Candidate(request, request.source, (command,), summary, base_revision)
+    
+    rollback_cmds = (rollback_cmd,) if rollback_cmd else ()
+    tx_hash = hashlib.sha256(f"{request.request_id}:{command}".encode()).hexdigest()[:10].upper()
+    transaction_id = f"TX-{tx_hash}"
+
+    return Candidate(
+        request=request,
+        router=request.source,
+        commands=(command,),
+        change_summary=summary,
+        base_revision=base_revision,
+        rollback_commands=rollback_cmds,
+        transaction_id=transaction_id,
+    )
 
 
 def is_allowlisted(command: str) -> bool:

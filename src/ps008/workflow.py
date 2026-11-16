@@ -20,8 +20,15 @@ def run_workflow(
     failure = "apply" if manager.fail_next else "verification" if manager.fail_verification else None
     review = service.prepare_review(data, failure=failure)
     payload = review["candidate"]
-    candidate = Candidate(parse_request(payload["request"]), payload["router"], tuple(payload["commands"]),
-                          payload["change_summary"], payload["base_revision"])
+    candidate = Candidate(
+        parse_request(payload["request"]),
+        payload["router"],
+        tuple(payload["commands"]),
+        payload["change_summary"],
+        payload["base_revision"],
+        tuple(payload.get("rollback_commands", ())),
+        payload.get("transaction_id", ""),
+    )
     validation = ValidationResult(**review["validation"])
     deployment = None
     if validation.valid:

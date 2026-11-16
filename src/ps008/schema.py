@@ -22,6 +22,8 @@ class Candidate:
     commands: tuple[str, ...]
     change_summary: str
     base_revision: int | None = None
+    rollback_commands: tuple[str, ...] = field(default_factory=tuple)
+    transaction_id: str = ""
 
 
 @dataclass
@@ -32,6 +34,8 @@ class ValidationResult:
     affected_routes: list[str] = field(default_factory=list)
     checks: list[dict] = field(default_factory=list)
     impact: dict = field(default_factory=dict)
+    invariants: list[dict] = field(default_factory=list)
+    blast_radius: dict = field(default_factory=dict)
 
 
 @dataclass
@@ -39,3 +43,5 @@ class DeploymentResult:
     success: bool
     message: str
     rolled_back: bool = False
+    rollback_executed_commands: tuple[str, ...] = field(default_factory=tuple)
+    transaction_id: str = ""

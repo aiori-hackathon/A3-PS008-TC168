@@ -1,0 +1,173 @@
+module ps008-intent {
+  yang-version 1.1;
+  namespace "urn:aiori:hackathon:ps008:intent";
+  prefix ps008;
+
+  import ietf-inet-types {
+    prefix inet;
+    reference
+      "RFC 6991: Common YANG Data Types";
+  }
+
+  organization
+    "AIORI-3 Hackathon - Advanced Internet Operations Research in India";
+
+  contact
+    "Team AgniKavach: Aaditya Hingmire & Parth Bhad";
+
+  description
+    "YANG 1.1 data model for declarative network configuration intents
+     supporting human-reviewed changes on a 3-router testbed.
+     Complies with RFC 7950 (YANG 1.1) and RFC 6241 (NETCONF).";
+
+  revision 2026-10-31 {
+    description
+      "Initial revision for AIORI-3 PS-008 hackathon submission.";
+    reference
+      "PS-008: Network Management Agent for Reviewed Configuration Changes";
+  }
+
+  /* ------------------------------------------------------------------
+   * Typedefs and Identifiers
+   * ------------------------------------------------------------------ */
+
+  typedef router-identifier {
+    type string {
+      pattern "R[1-3]";
+    }
+    description
+      "Identifier of a router in the 3-router lab testbed (R1, R2, R3).";
+  }
+
+  typedef intent-action {
+    type enumeration {
+      enum add-static-route {
+        description "Add a candidate IPv4 static route.";
+      }
+      enum remove-static-route {
+        description "Remove an existing agent-managed static route.";
+      }
+    }
+    description
+      "The supported declarative configuration intent actions.";
+  }
+
+  /* ------------------------------------------------------------------
+   * Configuration Data Nodes
+   * ------------------------------------------------------------------ */
+
+  container network-intent {
+    description
+      "Top-level container for declarative routing intents.";
+
+    leaf request-id {
+      type string {
+        length "1..120";
+      }
+      mandatory true;
+      description
+        "Unique idempotent identifier for this intent request.";
+    }
+
+    leaf intent-type {
+      type intent-action;
+      mandatory true;
+      description
+        "The type of routing intent requested.";
+    }
+
+    leaf source-router {
+      type router-identifier;
+      mandatory true;
+      description
+        "The target router where the candidate configuration will be applied.";
+    }
+
+    leaf destination-prefix {
+      type inet:ipv4-prefix;
+      mandatory true;
+      description
+        "The IPv4 destination prefix in CIDR notation (e.g. 10.20.0.0/24).";
+    }
+
+    leaf next-hop {
+      type inet:ipv4-address;
+      description
+        "Next-hop IPv4 gateway address. Mandatory for add-static-route.";
+    }
+
+    leaf protocol {
+      type string {
+        pattern "static";
+      }
+      default "static";
+      description
+        "Routing protocol family. Only static is supported.";
+    }
+
+    leaf requested-change {
+      type string {
+        length "1..2000";
+      }
+      mandatory true;
+      description
+        "Human-readable justification/reason for the requested configuration change.";
+    }
+  }
+
+  /* ------------------------------------------------------------------
+   * NETCONF RPC Operations
+   * ------------------------------------------------------------------ */
+
+  rpc submit-intent {
+    description
+      "Submit an intent request for digital-twin validation and human review.";
+    input {
+      uses network-intent;
+    }
+    output {
+      leaf review-id {
+        type string;
+        description "Unique token for the human approval gate.";
+      }
+      leaf status {
+        type enumeration {
+          enum pending;
+          enum invalid;
+        }
+        description "Review status following digital twin validation.";
+      }
+      leaf candidate-command {
+        type string;
+        description "Exact router CLI command generated from the intent.";
+      }
+      leaf validation-summary {
+        type string;
+        description "Forwarding and conflict verification summary.";
+      }
+    }
+  }
+
+  rpc approve-review {
+    description
+      "Approve a pending review to execute the candidate configuration.";
+    input {
+      leaf review-id {
+        type string;
+        mandatory true;
+      }
+    }
+    output {
+      leaf status {
+        type enumeration {
+          enum deployed;
+          enum rolled-back;
+          enum failed;
+        }
+      }
+      leaf applied-revision {
+        type uint32;
+      }
+    }
+  }
+}

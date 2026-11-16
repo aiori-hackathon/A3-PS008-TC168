@@ -1,0 +1,66 @@
+name: aiori-ps008-lab
+
+mgmt:
+  network: clab-ps008-mgmt
+  ipv4-subnet: 172.20.20.0/24
+
+topology:
+  nodes:
+    # ------------------------------------------------------------------
+    # 3-Router Testbed: R1 (Operations), R2 (Core), R3 (Engineering)
+    # ------------------------------------------------------------------
+    r1:
+      kind: linux
+      image: frrouting/frr:v8.4.1
+      mgmt-ipv4: 172.20.20.11
+      binds:
+        - configs/r1/daemons:/etc/frr/daemons
+        - configs/r1/frr.conf:/etc/frr/frr.conf
+
+    r2:
+      kind: linux
+      image: frrouting/frr:v8.4.1
+      mgmt-ipv4: 172.20.20.12
+      binds:
+        - configs/r2/daemons:/etc/frr/daemons
+        - configs/r2/frr.conf:/etc/frr/frr.conf
+
+    r3:
+      kind: linux
+      image: frrouting/frr:v8.4.1
+      mgmt-ipv4: 172.20.20.13
+      binds:
+        - configs/r3/daemons:/etc/frr/daemons
+        - configs/r3/frr.conf:/etc/frr/frr.conf
+
+    # ------------------------------------------------------------------
+    # Test Hosts / LAN Endpoints
+    # ------------------------------------------------------------------
+    client-ops:
+      kind: linux
+      image: alpine:latest
+      mgmt-ipv4: 172.20.20.21
+      exec:
+        - ip addr add 10.10.0.10/24 dev eth1
+        - ip route add default via 10.10.0.1
+
+    client-eng:
+      kind: linux
+      image: alpine:latest
+      mgmt-ipv4: 172.20.20.22
+      exec:
+        - ip addr add 10.20.0.10/24 dev eth1
+        - ip route add default via 10.20.0.1
+
+  links:
+    # Transit Link 1: R1 <-> R2 (10.0.1.0/24)
+    - endpoints: ["r1:eth1", "r2:eth1"]
+
+    # Transit Link 2: R2 <-> R3 (10.0.2.0/24)
+    - endpoints: ["r2:eth2", "r3:eth1"]
+
+    # LAN Access: Operations LAN on R1 (10.10.0.0/24)
+    - endpoints: ["r1:eth2", "client-ops:eth1"]
+
+    # LAN Access: Engineering LAN on R3 (10.20.0.0/24)
+    - endpoints: ["r3:eth2", "client-eng:eth1"]
